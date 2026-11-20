@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Linden Row Hair Studio | Sample site</title>
+<meta name="description" content="Cuts, color and finishing in a quiet four-chair studio. A sample small-business site by Tony Benson for a made-up salon.">
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --cream:#F6F1E7;
+  --paper:#FDFBF6;
+  --cream-2:#EBE3D0;
+  --sage-wash:#E3E9DA;
+  --sage-light:#CBD6BF;
+  --sage:#8FA486;
+  --sage-deep:#3F5A3E;
+  --charcoal:#23282B;
+  --muted:#555C55;
+  --rule:#CFC8B4;
+  --field-border:#6C7468;
+  --error:#A3301F;
+  --on-dark:#F6F1E7;
+  --on-dark-muted:#C9CFC1;
+  --bar:#F2D98C;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --gutter:max(16px,4vw);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--cream);color:var(--charcoal);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,dl,dd,figure{margin:0;padding:0}
+ul{list-style:none}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sage-deep);outline-offset:3px;border-radius:2px}
+.dark :focus-visible{outline-color:var(--on-dark)}
+.wrap{width:100%;max-width:1160px;margin-inline:auto;padding-inline:var(--gutter)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+section[id]{scroll-margin-top:52px}
+
+/* ---------- Sample bar ---------- */
+.samplebar{position:sticky;top:0;z-index:50;background:var(--bar);color:#2B1B00;border-bottom:2px solid var(--charcoal)}
+.samplebar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:38px}
+.samplebar p{font-size:12.5px;line-height:1.3;padding:4px 0}
+.samplebar strong{font-weight:800}
+.samplebar a{flex:none;display:inline-flex;align-items:center;min-height:44px;margin-block:-3px;padding:0 4px;font-size:13px;font-weight:700;color:#2B1B00;text-decoration:underline;text-underline-offset:3px}
+.samplebar a:focus-visible{outline-color:#2B1B00}
+
+/* ---------- Header ---------- */
+.site-head .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:72px}
+.brand{display:flex;align-items:center;gap:12px;min-height:44px;text-decoration:none}
+.brand svg{width:38px;height:38px;flex:none}
+.brand b{display:block;font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.1;letter-spacing:.01em}
+.brand i{display:block;font-style:normal;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.nav{display:none}
+.callpill{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--charcoal);border-radius:999px;font-size:15px;font-weight:600;text-decoration:none;white-space:nowrap}
+.callpill svg{width:16px;height:16px}
+@media (min-width:860px){
+  .nav{display:flex;align-items:center;gap:6px}
+  .nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;font-size:15px;text-decoration:none;color:var(--charcoal)}
+  .nav a:hover{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
+  .callpill{margin-left:6px}
+}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:999px;border:1px solid var(--sage-deep);background:var(--sage-deep);color:var(--paper);font:600 16px/1 var(--sans);letter-spacing:.02em;text-decoration:none;cursor:pointer}
+.btn:hover{background:#2F462E}
+.btn.ghost{background:transparent;color:var(--charcoal);border-color:var(--charcoal)}
+.btn.ghost:hover{background:var(--cream-2)}
+.btn svg{width:16px;height:16px}
+
+/* ---------- Hero ---------- */
+.hero{padding-block:28px 56px}
+.hero .wrap{display:grid;gap:36px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--sage-deep)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.35rem,8.4vw,4.3rem);line-height:1.07;letter-spacing:-.015em;margin-top:14px}
+h1 em{font-style:italic;color:var(--sage-deep)}
+.lede{margin-top:18px;max-width:34rem;font-size:18px;color:var(--muted)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero-meta{margin-top:22px;padding-top:16px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:4px 22px;font-size:14px;color:var(--muted)}
+.hero-art{max-width:300px;margin-inline:auto;width:100%}
+.hero-art svg{width:100%;height:auto}
+@media (min-width:860px){
+  .hero{padding-block:48px 88px}
+  .hero .wrap{grid-template-columns:1.15fr .85fr;align-items:center;gap:64px}
+  .hero-art{max-width:420px}
+}
+
+/* ---------- Generic section ---------- */
+.sec{padding-block:64px}
+.sec-head{max-width:36rem}
+.sec-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,5.6vw,2.9rem);line-height:1.12;letter-spacing:-.01em;margin-top:10px}
+.sec-head p{margin-top:14px;color:var(--muted)}
+@media (min-width:860px){.sec{padding-block:96px}}
+
+/* ---------- Intro facts ---------- */
+.facts{border-block:1px solid var(--rule);padding-block:34px}
+.facts ul{display:grid;gap:26px}
+.facts li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.facts svg{width:44px;height:44px}
+.facts h2{font-family:var(--serif);font-weight:400;font-size:20px;line-height:1.25}
+.facts p{font-size:15px;color:var(--muted);margin-top:2px}
+@media (min-width:860px){.facts ul{grid-template-columns:repeat(3,1fr);gap:48px}}
+
+/* ---------- Services ---------- */
+.services{background:var(--paper);border-bottom:1px solid var(--rule)}
+.svc-grid{display:grid;gap:44px;margin-top:40px}
+.svc h3{font-family:var(--serif);font-weight:400;font-style:italic;font-size:26px;color:var(--sage-deep);padding-bottom:10px;border-bottom:1px solid var(--charcoal)}
+.svc li{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.svc .nm{font-weight:600;font-size:16px;line-height:1.35}
+.svc .dur{display:block;font-size:13.5px;color:var(--muted);font-weight:400;margin-top:2px}
+.svc .pr{flex:none;font-family:var(--serif);font-size:20px;white-space:nowrap;text-align:right}
+.svc .pr small{font-family:var(--sans);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.fine{margin-top:30px;font-size:14px;color:var(--muted);max-width:42rem}
+@media (min-width:860px){.svc-grid{grid-template-columns:repeat(3,1fr);gap:56px;margin-top:52px}}
+
+/* ---------- Team ---------- */
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:36px 16px;margin-top:40px}
+.person{text-align:center}
+.person svg{width:min(124px,100%);height:auto;margin-inline:auto}
+.person h3{font-family:var(--serif);font-weight:400;font-size:22px;margin-top:14px;line-height:1.2}
+.person .role{font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--sage-deep);margin-top:6px}
+.person p:last-child{font-size:14.5px;color:var(--muted);margin-top:8px;max-width:15rem;margin-inline:auto}
+@media (min-width:860px){.team-grid{grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px}.person svg{width:148px}}
+
+/* ---------- Booking ---------- */
+.book{background:var(--sage-wash);border-block:1px solid var(--sage-light)}
+.book .wrap{display:grid;gap:36px}
+.book-notes{margin-top:26px;display:grid;gap:12px}
+.book-notes li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px}
+.book-notes a{display:inline-flex;align-items:center;min-height:44px;margin-left:6px;font-weight:600;text-underline-offset:4px}
+.book-notes svg{width:20px;height:20px;flex:none;margin-top:3px}
+.card{background:var(--paper);border:1px solid var(--sage-light);border-radius:8px;padding:22px 18px 26px;box-shadow:0 1px 0 rgba(35,40,43,.04),0 18px 40px -26px rgba(35,40,43,.28)}
+.card h3{font-family:var(--serif);font-weight:400;font-size:24px;line-height:1.2}
+.row{display:grid;gap:18px;margin-top:18px}
+.field{display:block;min-width:0}
+.field>label,.field>legend,legend.lbl{display:block;font-size:14px;font-weight:600;margin-bottom:6px;padding:0}
+.opt{font-weight:400;color:var(--muted)}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.ctl{width:100%;min-height:50px;padding:0 14px;border:1px solid var(--field-border);border-radius:6px;background:#fff;color:var(--charcoal);font:400 16px/1.3 var(--sans);appearance:none;-webkit-appearance:none}
+select.ctl{padding-right:40px}
+.sel{position:relative}
+.sel svg{position:absolute;right:14px;top:50%;width:16px;height:16px;margin-top:-8px;pointer-events:none}
+.ctl:focus-visible{outline:3px solid var(--sage-deep);outline-offset:1px}
+.ctl[aria-invalid="true"],.chips[aria-invalid="true"] .chip span{border-color:var(--error)}
+.ctl[aria-invalid="true"]{border-width:2px}
+.err{display:none;margin-top:6px;font-size:14px;font-weight:600;color:var(--error)}
+.err.on{display:block}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.chip{position:relative;display:block}
+.chip input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.chip span{display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 6px;border:1px solid var(--field-border);border-radius:6px;background:#fff;font-size:15px;white-space:nowrap}
+.chip input:checked+span{background:var(--sage-deep);border-color:var(--sage-deep);color:var(--paper);font-weight:600}
+.chip input:focus-visible+span{outline:3px solid var(--sage-deep);outline-offset:2px}
+.chip input:disabled{cursor:not-allowed}
+.chip input:disabled+span{background:var(--cream);color:#6B706A;border-color:var(--rule);text-decoration:line-through}
+.hint{font-size:13.5px;color:var(--muted);margin-top:6px}
+.formerr{display:none;margin-top:20px;padding:12px 14px;border-left:4px solid var(--error);background:#FBEDE9;color:#7A2415;font-weight:600;font-size:15px}
+.formerr.on{display:block}
+.submit{margin-top:22px;width:100%}
+.result{display:none}
+.result.on{display:block}
+.result:focus-visible{outline-offset:6px}
+.result .big{font-family:var(--serif);font-size:26px;line-height:1.25;color:var(--sage-deep);margin-top:6px}
+.result dl{margin-top:20px;border-top:1px solid var(--rule)}
+.result dl div{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--rule);font-size:15px}
+.result dt{color:var(--muted)}
+.result dd{text-align:right;font-weight:600}
+.result .btn{margin-top:22px}
+@media (min-width:560px){.row.two{grid-template-columns:1fr 1fr}}
+@media (min-width:860px){
+  .book .wrap{grid-template-columns:.8fr 1.2fr;gap:72px;align-items:start}
+  .card{padding:34px 34px 38px}
+}
+
+/* ---------- Visit ---------- */
+.visit .wrap{display:grid;gap:44px}
+.hours{margin-top:28px;border-top:1px solid var(--charcoal)}
+.hours div{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--rule);font-size:16px}
+.hours dt{font-weight:600}
+.hours dd{color:var(--muted);text-align:right}
+.hours .closed dd{font-style:italic}
+.addr{margin-top:28px;font-style:normal;font-size:16px}
+.addr strong{font-family:var(--serif);font-weight:400;font-size:20px;display:block}
+.addr a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;text-decoration-thickness:1px;text-underline-offset:4px}
+.map{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--sage-wash)}
+.map svg{width:100%;height:auto}
+.map-cap{padding:12px 16px;font-size:14px;color:var(--muted);background:var(--paper);border-top:1px solid var(--rule)}
+@media (min-width:860px){.visit .wrap{grid-template-columns:1fr 1.1fr;gap:72px;align-items:start}}
+
+/* ---------- Footer ---------- */
+.foot{background:var(--charcoal);color:var(--on-dark);padding-block:44px 36px}
+.foot .wrap{display:grid;gap:20px}
+.foot .name{font-family:var(--serif);font-size:24px;line-height:1.2}
+.foot p{color:var(--on-dark-muted);font-size:14.5px}
+.foot a{color:var(--on-dark);display:inline-flex;align-items:center;min-height:44px;text-underline-offset:4px}
+.foot .legal{border-top:1px solid #4A5154;padding-top:14px;font-size:13.5px}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="leaf" d="M0 0C14-22 14-50 0-78C-14-50-14-22 0 0Z"/>
+  </defs>
+</svg>
+
+<div class="samplebar" role="region" aria-label="Sample site notice">
+  <div class="wrap">
+    <p><strong>Sample site by Tony Benson.</strong> This business is made up.</p>
+    <a href="../../index.html#samples">Back to portfolio</a>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Linden Row Hair Studio, top of page">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" fill="none" stroke="#23282B" stroke-width="1"/>
+        <circle cx="20" cy="20" r="15.5" fill="#3F5A3E"/>
+        <g transform="translate(20 31)">
+          <use href="#leaf" fill="#F6F1E7" transform="scale(.32)"/>
+          <use href="#leaf" fill="#C4D1B7" transform="rotate(-42) scale(.2)"/>
+          <use href="#leaf" fill="#C4D1B7" transform="rotate(42) scale(.2)"/>
+        </g>
+      </svg>
+      <span><b>Linden Row</b><i>Hair Studio</i></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#team">The team</a>
+      <a href="#visit">Hours and location</a>
+      <a class="btn" href="#book" style="min-height:44px;padding:0 22px;margin-left:8px;color:var(--paper)">Book</a>
+    </nav>
+    <a class="callpill" href="tel:+15555550142" aria-label="Call Linden Row Hair Studio, (555) 555-0142">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.2 1.8l2.2-.3 1.5 3.3-1.4 1.1a8 8 0 003.6 3.6l1.1-1.4 3.3 1.5-.3 2.2a2 2 0 01-2 1.7A11.3 11.3 0 011.5 3.8a2 2 0 011.7-2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      Call
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="h1">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Hair studio &middot; Your Town</p>
+        <h1 id="h1"><em>Unhurried</em> hair, in a quiet room on Main Street.</h1>
+        <p class="lede">Cuts, color and finishing from four stylists who book each client a full hour or more, so nobody is watching the clock.</p>
+        <div class="cta">
+          <a class="btn" href="#book">Book an appointment
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn ghost" href="tel:+15555550142">(555) 555-0142</a>
+        </div>
+        <p class="hero-meta"><span>Tuesday to Saturday</span><span>123 Main Street, Your Town</span></p>
+      </div>
+
+      <div class="hero-art">
+        <svg viewBox="0 0 420 520" role="img" aria-label="Drawing of an arched window with a leafy branch and a pair of open scissors">
+          <path d="M30 520V210a180 180 0 0 1 360 0V520Z" fill="#CBD6BF"/>
+          <path d="M52 520V210a158 158 0 0 1 316 0V520" fill="none" stroke="#3F5A3E" stroke-width="1" opacity=".55"/>
+          <circle cx="292" cy="168" r="46" fill="#F6F1E7"/>
+          <circle cx="292" cy="168" r="46" fill="none" stroke="#3F5A3E" stroke-width="1" opacity=".5"/>
+          <path d="M52 468H368" stroke="#3F5A3E" stroke-width="1" opacity=".35"/>
+          <path d="M148 520C138 430 190 340 178 190" fill="none" stroke="#23282B" stroke-width="1.6" stroke-linecap="round"/>
+          <g fill="#3F5A3E">
+            <use href="#leaf" transform="translate(146 478) rotate(-58) scale(.78)"/>
+            <use href="#leaf" transform="translate(147 462) rotate(50) scale(.7)" fill="#8FA486"/>
+            <use href="#leaf" transform="translate(158 414) rotate(-52) scale(.7)"/>
+            <use href="#leaf" transform="translate(163 396) rotate(52) scale(.66)" fill="#8FA486"/>
+            <use href="#leaf" transform="translate(178 348) rotate(-46) scale(.62)"/>
+            <use href="#leaf" transform="translate(181 330) rotate(48) scale(.58)" fill="#8FA486"/>
+            <use href="#leaf" transform="translate(184 278) rotate(-40) scale(.5)"/>
+            <use href="#leaf" transform="translate(184 262) rotate(42) scale(.48)" fill="#8FA486"/>
+            <use href="#leaf" transform="translate(178 196) rotate(4) scale(.5)"/>
+          </g>
+          <g transform="translate(272 372) rotate(-14) scale(.78)">
+            <g fill="#23282B" stroke="#23282B" stroke-linejoin="round">
+              <path d="M-31-152L-10 0 11 6Z" stroke-width="2"/>
+              <path d="M0 0L30 104" fill="none" stroke-width="8" stroke-linecap="round"/>
+              <circle cx="38" cy="130" r="25" fill="none" stroke-width="7"/>
+            </g>
+            <g fill="#23282B" stroke="#23282B" stroke-linejoin="round" transform="scale(-1 1)">
+              <path d="M-31-152L-10 0 11 6Z" stroke-width="2"/>
+              <path d="M0 0L30 104" fill="none" stroke-width="8" stroke-linecap="round"/>
+              <circle cx="38" cy="130" r="25" fill="none" stroke-width="7"/>
+            </g>
+            <circle r="9" fill="#F6F1E7" stroke="#23282B" stroke-width="3"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts" aria-label="What to expect">
+    <div class="wrap">
+      <ul>
+        <li>
+          <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="none" stroke="#23282B" stroke-width="1"/><circle cx="22" cy="22" r="6" fill="#3F5A3E"/><path d="M22 6v6M22 32v6M6 22h6M32 22h6" stroke="#3F5A3E" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div><h2>One client per stylist</h2><p>Nobody is double-booked. Your stylist stays with you from the first rinse to the last curl.</p></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="none" stroke="#23282B" stroke-width="1"/><path d="M12 28c3-12 17-14 20-14-1 11-8 18-18 17" fill="#CBD6BF" stroke="#3F5A3E" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 32c4-6 9-10 15-13" fill="none" stroke="#3F5A3E" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div><h2>A free consultation first</h2><p>New clients get 20 minutes to talk through the cut or color, with a price agreed before we start.</p></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="none" stroke="#23282B" stroke-width="1"/><circle cx="22" cy="22" r="11" fill="none" stroke="#3F5A3E" stroke-width="1.5"/><path d="M22 15v7l5 3" fill="none" stroke="#3F5A3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div><h2>Time set aside to do it well</h2><p>A cut is booked for an hour, color for two to four. We would rather run early than rush.</p></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec services" id="services" aria-labelledby="h-services">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Services and prices</p>
+        <h2 id="h-services">Simple menu, plain prices.</h2>
+        <p>Every service includes a wash, a scalp massage and a style. Prices marked &ldquo;from&rdquo; depend on length and thickness, and we confirm the number at your consultation.</p>
+      </div>
+
+      <div class="svc-grid">
+        <div class="svc">
+          <h3>Cut and style</h3>
+          <ul>
+            <li><span class="nm">Women&rsquo;s cut and style<span class="dur">60 min</span></span><span class="pr">$68</span></li>
+            <li><span class="nm">Men&rsquo;s cut<span class="dur">40 min</span></span><span class="pr">$42</span></li>
+            <li><span class="nm">Children&rsquo;s cut, under 12<span class="dur">30 min</span></span><span class="pr">$30</span></li>
+            <li><span class="nm">Bang or neckline trim<span class="dur">15 min</span></span><span class="pr">$15</span></li>
+          </ul>
+        </div>
+        <div class="svc">
+          <h3>Color</h3>
+          <ul>
+            <li><span class="nm">Root color<span class="dur">2 hours</span></span><span class="pr">$95</span></li>
+            <li><span class="nm">All-over color<span class="dur">2 hours 30 min</span></span><span class="pr"><small>from</small>$130</span></li>
+            <li><span class="nm">Balayage<span class="dur">3 to 4 hours</span></span><span class="pr"><small>from</small>$240</span></li>
+            <li><span class="nm">Gloss and tone<span class="dur">45 min</span></span><span class="pr">$60</span></li>
+          </ul>
+        </div>
+        <div class="svc">
+          <h3>Finishing and care</h3>
+          <ul>
+            <li><span class="nm">Blowout<span class="dur">45 min</span></span><span class="pr">$48</span></li>
+            <li><span class="nm">Updo for an event<span class="dur">60 min</span></span><span class="pr"><small>from</small>$95</span></li>
+            <li><span class="nm">Deep conditioning treatment<span class="dur">30 min</span></span><span class="pr">$38</span></li>
+            <li><span class="nm">New-client consultation<span class="dur">20 min</span></span><span class="pr">Free</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="fine">Prices on this sample site are made up for illustration.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="team" aria-labelledby="h-team">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">The team</p>
+        <h2 id="h-team">Four chairs, four people who know your hair.</h2>
+        <p>Pick a stylist when you book, or leave it open and we will match you to whoever fits your hair and your schedule.</p>
+      </div>
+
+      <ul class="team-grid">
+        <li class="person">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="58" fill="none" stroke="#23282B" stroke-width="1"/>
+            <circle cx="60" cy="60" r="51" fill="#3F5A3E"/>
+            <text x="60" y="78" text-anchor="middle" font-family="'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif" font-size="56" font-style="italic" fill="#F6F1E7">M</text>
+            <g transform="translate(94 96)"><use href="#leaf" fill="#C4D1B7" transform="rotate(32) scale(.3)"/><use href="#leaf" fill="#C4D1B7" transform="rotate(-18) scale(.24)"/></g>
+          </svg>
+          <h3>Maren</h3>
+          <p class="role">Owner &middot; Color</p>
+          <p>Warm blondes, soft browns and gray blending.</p>
+        </li>
+        <li class="person">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="58" fill="none" stroke="#23282B" stroke-width="1"/>
+            <circle cx="60" cy="60" r="51" fill="#EBE3D0"/>
+            <text x="60" y="78" text-anchor="middle" font-family="'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif" font-size="56" font-style="italic" fill="#23282B">T</text>
+            <g transform="translate(94 96)"><use href="#leaf" fill="#3F5A3E" transform="rotate(32) scale(.3)"/><use href="#leaf" fill="#8FA486" transform="rotate(-18) scale(.24)"/></g>
+          </svg>
+          <h3>Teddy</h3>
+          <p class="role">Cuts &middot; Men and kids</p>
+          <p>Clean, short cuts and first haircuts. Patient with wiggly kids.</p>
+        </li>
+        <li class="person">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="58" fill="none" stroke="#23282B" stroke-width="1"/>
+            <circle cx="60" cy="60" r="51" fill="#23282B"/>
+            <text x="60" y="78" text-anchor="middle" font-family="'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif" font-size="56" font-style="italic" fill="#F6F1E7">I</text>
+            <g transform="translate(94 96)"><use href="#leaf" fill="#8FA486" transform="rotate(32) scale(.3)"/><use href="#leaf" fill="#CBD6BF" transform="rotate(-18) scale(.24)"/></g>
+          </svg>
+          <h3>Imani</h3>
+          <p class="role">Balayage &middot; Blonding</p>
+          <p>Hand-painted highlights that grow out gracefully. Books color consultations.</p>
+        </li>
+        <li class="person">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="58" fill="none" stroke="#23282B" stroke-width="1"/>
+            <circle cx="60" cy="60" r="51" fill="#CBD6BF"/>
+            <text x="60" y="78" text-anchor="middle" font-family="'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif" font-size="56" font-style="italic" fill="#23282B">W</text>
+            <g transform="translate(94 96)"><use href="#leaf" fill="#3F5A3E" transform="rotate(32) scale(.3)"/><use href="#leaf" fill="#F6F1E7" transform="rotate(-18) scale(.24)"/></g>
+          </svg>
+          <h3>Wren</h3>
+          <p class="role">Texture &middot; Updos</p>
+          <p>Curls, waves and event styling. Trained in cutting dry hair as it falls.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec book" id="book" aria-labelledby="h-book">
+    <div class="wrap">
+      <div>
+        <div class="sec-head">
+          <p class="eyebrow">Book an appointment</p>
+          <h2 id="h-book">Choose a time that suits you.</h2>
+          <p>Tell us what you would like and when. We reply by text within one working day to confirm.</p>
+        </div>
+        <ul class="book-notes">
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="#3F5A3E" stroke-width="1.4"/><path d="M6 10.4l2.8 2.8L14 7.6" fill="none" stroke="#3F5A3E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Free to change or cancel up to 24 hours ahead.</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="#3F5A3E" stroke-width="1.4"/><path d="M6 10.4l2.8 2.8L14 7.6" fill="none" stroke="#3F5A3E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>No deposit for cuts. Color over $130 holds with a $25 card on file.</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="#3F5A3E" stroke-width="1.4"/><path d="M6 10.4l2.8 2.8L14 7.6" fill="none" stroke="#3F5A3E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Prefer to talk? Call <a href="tel:+15555550142">(555) 555-0142</a></span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <form id="book-form" novalidate aria-labelledby="form-title">
+          <h3 id="form-title">Your appointment</h3>
+
+          <div class="row">
+            <div class="field">
+              <label for="f-service">Service</label>
+              <div class="sel"><select class="ctl" id="f-service" name="service" required aria-describedby="e-service">
+                <option value="">Choose a service</option>
+                <optgroup label="Cut and style">
+                  <option>Women&rsquo;s cut and style, $68</option>
+                  <option>Men&rsquo;s cut, $42</option>
+                  <option>Children&rsquo;s cut, $30</option>
+                  <option>Bang or neckline trim, $15</option>
+                </optgroup>
+                <optgroup label="Color">
+                  <option>Root color, $95</option>
+                  <option>All-over color, from $130</option>
+                  <option>Balayage, from $240</option>
+                  <option>Gloss and tone, $60</option>
+                </optgroup>
+                <optgroup label="Finishing and care">
+                  <option>Blowout, $48</option>
+                  <option>Updo for an event, from $95</option>
+                  <option>Deep conditioning, $38</option>
+                  <option>New-client consultation, free</option>
+                </optgroup>
+              </select><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="#23282B" stroke-width="1.6"/></svg></div>
+              <p class="err" id="e-service" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="f-stylist">Stylist</label>
+              <div class="sel"><select class="ctl" id="f-stylist" name="stylist" aria-describedby="e-stylist">
+                <option value="No preference">No preference</option>
+                <option>Maren</option>
+                <option>Teddy</option>
+                <option>Imani</option>
+                <option>Wren</option>
+              </select><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="#23282B" stroke-width="1.6"/></svg></div>
+              <p class="err" id="e-stylist" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="f-day">Day</label>
+              <input class="ctl" type="date" id="f-day" name="day" required aria-describedby="h-day e-day">
+              <p class="hint" id="h-day">We are open Tuesday to Saturday.</p>
+              <p class="err" id="e-day" aria-live="polite"></p>
+            </div>
+
+            <fieldset class="field" aria-describedby="e-time">
+              <legend class="lbl">Time</legend>
+              <div class="chips" id="f-time" role="radiogroup" aria-label="Appointment time">
+                <label class="chip"><input type="radio" name="time" value="9:30 am"><span>9:30 am</span></label>
+                <label class="chip"><input type="radio" name="time" value="10:30 am"><span>10:30 am</span></label>
+                <label class="chip"><input type="radio" name="time" value="11:30 am"><span>11:30 am</span></label>
+                <label class="chip"><input type="radio" name="time" value="1:00 pm"><span>1:00 pm</span></label>
+                <label class="chip"><input type="radio" name="time" value="2:30 pm"><span>2:30 pm</span></label>
+                <label class="chip"><input type="radio" name="time" value="4:00 pm" data-late><span>4:00 pm</span></label>
+                <label class="chip"><input type="radio" name="time" value="5:00 pm" data-late><span>5:00 pm</span></label>
+              </div>
+              <p class="hint" id="h-time">Saturday appointments end by 4:00 pm, so the late times are unavailable.</p>
+              <p class="err" id="e-time" aria-live="polite"></p>
+            </fieldset>
+
+            <div class="row two" style="margin-top:0">
+              <div class="field">
+                <label for="f-name">Your name</label>
+                <input class="ctl" type="text" id="f-name" name="name" autocomplete="name" required aria-describedby="e-name">
+                <p class="err" id="e-name" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="f-phone">Mobile number</label>
+                <input class="ctl" type="tel" id="f-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="(555) 555-0123" required aria-describedby="e-phone">
+                <p class="err" id="e-phone" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f-notes">Anything we should know? <span class="opt">Optional</span></label>
+              <textarea class="ctl" id="f-notes" name="notes" rows="3" style="padding:12px 14px;resize:vertical"></textarea>
+            </div>
+          </div>
+
+          <p class="formerr" id="form-error" role="alert"></p>
+          <button class="btn submit" type="submit">Request this appointment</button>
+        </form>
+
+        <div class="result" id="result" role="status" tabindex="-1" aria-live="polite">
+          <p class="eyebrow">Request received</p>
+          <p class="big">This is a sample, so nothing was sent.</p>
+          <p class="hint" style="font-size:15px;margin-top:10px">On a real site, this is where the studio would get your request and text you back. Here is what you entered.</p>
+          <dl id="result-list"></dl>
+          <button class="btn ghost" type="button" id="again">Start over</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec visit" id="visit" aria-labelledby="h-visit">
+    <div class="wrap">
+      <div>
+        <div class="sec-head">
+          <p class="eyebrow">Hours and location</p>
+          <h2 id="h-visit">Find us on Main Street.</h2>
+        </div>
+        <dl class="hours">
+          <div><dt>Monday</dt><dd>Closed</dd></div>
+          <div><dt>Tuesday to Friday</dt><dd>9:30 am to 6:30 pm</dd></div>
+          <div><dt>Saturday</dt><dd>9:00 am to 4:00 pm</dd></div>
+          <div class="closed"><dt>Sunday</dt><dd>Closed</dd></div>
+        </dl>
+        <address class="addr">
+          <strong>123 Main Street, Your Town</strong>
+          Free parking behind the building. Look for the green door.<br>
+          <a href="tel:+15555550142">(555) 555-0142</a>
+        </address>
+      </div>
+
+      <figure class="map">
+        <svg viewBox="0 0 400 300" role="img" aria-label="Simple drawn map: the studio is on Main Street, one block from the park, with parking behind the building">
+          <rect width="400" height="300" fill="#EEF1E6"/>
+          <rect x="226" y="20" width="150" height="104" rx="6" fill="#CBD6BF"/>
+          <g fill="#8FA486"><circle cx="262" cy="56" r="11"/><circle cx="300" cy="86" r="13"/><circle cx="342" cy="52" r="10"/><circle cx="338" cy="96" r="9"/></g>
+          <g fill="#FDFBF6" stroke="#CFC8B4" stroke-width="1">
+            <rect x="24" y="20" width="84" height="104" rx="3"/>
+            <rect x="124" y="20" width="84" height="104" rx="3"/>
+            <rect x="24" y="178" width="84" height="102" rx="3"/>
+            <rect x="124" y="178" width="84" height="102" rx="3"/>
+            <rect x="226" y="178" width="150" height="102" rx="3"/>
+          </g>
+          <path d="M0 150H400M216 0V300M116 0V300" stroke="#FDFBF6" stroke-width="22" fill="none"/>
+          <path d="M0 150H400" stroke="#CFC8B4" stroke-width="1" stroke-dasharray="8 8" fill="none"/>
+          <rect x="132" y="190" width="68" height="34" rx="2" fill="#EBE3D0" stroke="#23282B" stroke-width="1"/>
+          <rect x="140" y="236" width="52" height="30" rx="2" fill="#E3E9DA" stroke="#8C927F" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="166" y="256" text-anchor="middle" font-family="-apple-system,'Segoe UI',Roboto,Arial,sans-serif" font-size="11" fill="#3A4139">Parking</text>
+          <text x="250" y="154" font-family="-apple-system,'Segoe UI',Roboto,Arial,sans-serif" font-size="12" font-weight="600" letter-spacing="2" fill="#23282B">MAIN STREET</text>
+          <text x="301" y="112" text-anchor="middle" font-family="-apple-system,'Segoe UI',Roboto,Arial,sans-serif" font-size="11" fill="#2E4A2D" font-weight="600">Linden Park</text>
+          <g transform="translate(166 190)">
+            <path d="M0-4C-12-4-18-16-18-26a18 18 0 0 1 36 0C18-16 12-4 0-4Z" fill="#3F5A3E" transform="translate(0 -4)"/>
+            <circle cy="-30" r="6" fill="#F6F1E7"/>
+          </g>
+        </svg>
+        <figcaption class="map-cap">Drawn map for the sample, not to scale. The studio is the building with the pin.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot dark">
+  <div class="wrap">
+    <div>
+      <p class="name">Linden Row Hair Studio</p>
+      <p>123 Main Street, Your Town &middot; Tuesday to Saturday</p>
+      <a href="tel:+15555550142">(555) 555-0142</a>
+    </div>
+    <p class="legal">Sample site by Tony Benson. This business is made up. <a href="../../index.html#samples">Back to the portfolio</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('book-form');
+  var result = document.getElementById('result');
+  var list = document.getElementById('result-list');
+  var summary = document.getElementById('form-error');
+  var dayEl = document.getElementById('f-day');
+  var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  dayEl.min = today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate());
+
+  function parseDay(v) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+    if (!m) return null;
+    var d = new Date(+m[1], +m[2] - 1, +m[3]);
+    return d.getMonth() === +m[2] - 1 ? d : null;
+  }
+  function field(id) { return document.getElementById('f-' + id); }
+  function showError(key, msg) {
+    var p = document.getElementById('e-' + key);
+    var ctl = key === 'time' ? document.getElementById('f-time') : field(key);
+    if (!p || !ctl) return;
+    p.textContent = msg || '';
+    p.classList.toggle('on', !!msg);
+    if (msg) ctl.setAttribute('aria-invalid', 'true'); else ctl.removeAttribute('aria-invalid');
+  }
+  function chosenTime() {
+    var r = form.querySelector('input[name="time"]:checked');
+    return r ? r.value : '';
+  }
+
+  /* Saturday: the late times are not offered. */
+  function syncTimes() {
+    var d = parseDay(dayEl.value);
+    var sat = d && d.getDay() === 6;
+    var late = form.querySelectorAll('input[data-late]');
+    for (var i = 0; i < late.length; i++) {
+      late[i].disabled = !!sat;
+      if (sat && late[i].checked) late[i].checked = false;
+    }
+  }
+
+  var checks = {
+    service: function () { return field('service').value ? '' : 'Choose a service.'; },
+    day: function () {
+      var v = dayEl.value;
+      if (!v) return 'Choose a day.';
+      var d = parseDay(v);
+      if (!d) return 'Enter a real date.';
+      if (d < today) return 'Choose today or a later day.';
+      if (d.getDay() === 0 || d.getDay() === 1) return 'We are closed on Sundays and Mondays. Please choose Tuesday to Saturday.';
+      return '';
+    },
+    time: function () { return chosenTime() ? '' : 'Choose a time.'; },
+    name: function () { return field('name').value.replace(/\s+/g, '').length >= 2 ? '' : 'Enter your name.'; },
+    phone: function () {
+      var digits = field('phone').value.replace(/\D/g, '');
+      if (!digits) return 'Enter a mobile number so we can confirm.';
+      if (digits.length < 10 || digits.length > 11) return 'Enter the number with area code, like (555) 555-0123.';
+      return '';
+    }
+  };
+  var order = ['service', 'day', 'time', 'name', 'phone'];
+
+  function runAll() {
+    var bad = [];
+    order.forEach(function (k) {
+      var msg = checks[k]();
+      showError(k, msg);
+      if (msg) bad.push(k);
+    });
+    return bad;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = runAll();
+    if (bad.length) {
+      summary.textContent = bad.length === 1 ? 'One thing needs a look before we can continue.' : bad.length + ' things need a look before we can continue.';
+      summary.classList.add('on');
+      var first = bad[0] === 'time' ? form.querySelector('input[name="time"]:not(:disabled)') : field(bad[0]);
+      if (first) first.focus();
+      return;
+    }
+    summary.classList.remove('on');
+    summary.textContent = '';
+
+    var d = parseDay(dayEl.value);
+    var when = DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ' at ' + chosenTime().replace(' ', '\u00a0');
+    var rows = [
+      ['Service', field('service').value],
+      ['Stylist', field('stylist').value],
+      ['When', when],
+      ['Name', field('name').value.trim()],
+      ['Mobile', field('phone').value.trim()]
+    ];
+    list.textContent = '';
+    rows.forEach(function (r) {
+      var wrap = document.createElement('div');
+      var dt = document.createElement('dt');
+      var dd = document.createElement('dd');
+      dt.textContent = r[0];
+      dd.textContent = r[1];
+      wrap.appendChild(dt);
+      wrap.appendChild(dd);
+      list.appendChild(wrap);
+    });
+    form.hidden = true;
+    result.classList.add('on');
+    result.focus();
+  });
+
+  /* Clear a message as soon as the person fixes the field. */
+  ['service', 'name', 'phone'].forEach(function (k) {
+    var el = field(k);
+    el.addEventListener('input', function () { if (!checks[k]()) showError(k, ''); });
+    el.addEventListener('change', function () { if (!checks[k]()) showError(k, ''); });
+  });
+  dayEl.addEventListener('change', function () {
+    syncTimes();
+    if (!checks.day()) showError('day', '');
+    if (chosenTime()) showError('time', '');
+  });
+  dayEl.addEventListener('blur', function () { if (dayEl.value) showError('day', checks.day()); });
+  form.addEventListener('change', function (e) {
+    if (e.target.name === 'time') showError('time', '');
+  });
+
+  document.getElementById('again').addEventListener('click', function () {
+    form.reset();
+    syncTimes();
+    order.forEach(function (k) { showError(k, ''); });
+    result.classList.remove('on');
+    form.hidden = false;
+    field('service').focus();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wren Street Bakery &amp; Coffee | Sample site</title>
+<meta name="description" content="Bread, pastry and coffee with order-ahead pickup. A sample small-business site by Tony Benson for a made-up bakery.">
+<meta name="theme-color" content="#2B1A12">
+<style>
+:root{
+  --cream:#FBF4E8;
+  --cream-2:#F4E7D1;
+  --paper:#FFFDF8;
+  --brown:#3B2418;
+  --brown-deep:#2B1A12;
+  --brown-soft:#6B4F3F;
+  --terra:#B4492A;
+  --terra-dark:#8F3519;
+  --mustard:#E8A92D;
+  --mustard-soft:#F7D98A;
+  --terra-soft:#F1B79F;
+  --tan:#EBD3B0;
+  --line:#DCC7A6;
+  --field:#8A6B58;
+  --radius:24px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--brown);font:16px/1.55 var(--sans);overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+h1,h2,h3{font-family:var(--serif);font-weight:800;line-height:1.1;letter-spacing:-.01em;margin:0}
+p{margin:0}
+a{color:var(--terra-dark)}
+[hidden]{display:none!important}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding-left:16px;padding-right:16px}
+:focus-visible{outline:3px solid var(--brown);outline-offset:3px;border-radius:6px}
+.dark :focus-visible{outline-color:var(--cream)}
+.skip{position:absolute;left:16px;top:-80px;background:var(--brown);color:var(--cream);padding:12px 16px;border-radius:12px;z-index:100}
+.skip:focus{top:52px}
+section[id],header[id]{scroll-margin-top:56px}
+
+/* ---------- Sample bar ---------- */
+.samplebar{position:sticky;top:0;z-index:60;background:var(--brown-deep);color:#FBF4E8}
+.samplebar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.samplebar p{font-size:12px;line-height:1.3;padding:4px 0}
+.samplebar strong{font-weight:800}
+.samplebar a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;color:#F4C25B;font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.samplebar a:focus-visible{outline-color:#FBF4E8}
+
+/* ---------- Header ---------- */
+.site-head{padding:10px 0 6px}
+.site-head .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;min-height:48px;color:var(--brown);text-decoration:none}
+.brand svg{width:46px;height:46px;flex:none}
+.brand b{display:block;font-family:var(--serif);font-size:22px;line-height:1}
+.brand small{display:block;margin-top:4px;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--brown-soft);font-weight:700}
+.head-right{display:flex;align-items:center;gap:6px}
+.nav{display:none}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;color:var(--brown);font-weight:700;text-decoration:none}
+.nav a:hover{background:var(--cream-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;border:2px solid var(--brown);background:var(--terra);color:#FFFDF8;font:700 16px/1 var(--sans);text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 var(--brown);transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
+.btn:hover{background:var(--terra-dark)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--brown)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.alt{background:var(--paper);color:var(--brown)}
+.btn.alt:hover{background:var(--cream-2)}
+.btn.sun{background:var(--mustard);color:var(--brown)}
+.btn.sun:hover{background:#F2BC4F}
+.btn.block{width:100%}
+.btn.small{min-height:44px;padding:0 16px;font-size:15px}
+@media (min-width:860px){.nav{display:flex;gap:2px;margin-right:8px}}
+
+/* ---------- Hero ---------- */
+.hero{padding:10px 0 44px;position:relative}
+.hero-grid{display:grid;gap:22px}
+.eyebrow{display:inline-block;background:var(--mustard);color:var(--brown);font-weight:800;font-size:13px;padding:5px 13px;border-radius:999px;transform:rotate(-1.5deg);border:2px solid var(--brown)}
+.hero h1{font-size:clamp(31px,8.2vw,62px);margin:12px 0 10px}
+.squig{position:relative;display:inline-block}
+.squig svg{position:absolute;left:0;bottom:-8px;width:100%;height:10px}
+.squig path{fill:none;stroke:var(--mustard);stroke-width:4;stroke-linecap:round}
+.lede{font-size:17px;max-width:34ch;color:var(--brown)}
+.hero-cta{display:none;gap:12px;margin-top:20px;flex-wrap:wrap}
+.still{display:none}
+@media (min-width:960px){
+  .hero{padding:26px 0 70px}
+  .hero-grid{grid-template-columns:1.02fr .98fr;gap:56px;align-items:start}
+  .lede{font-size:19px}
+  .hero-cta{display:flex}
+  .still{display:block;margin-top:34px;width:100%;max-width:520px}
+}
+
+/* ---------- Order card ---------- */
+.order{scroll-margin-top:56px;background:var(--paper);border:2px solid var(--brown);border-radius:28px;box-shadow:6px 6px 0 var(--mustard);padding:18px 16px 20px;position:relative}
+.order-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.order h2{font-size:26px}
+.order .sub{font-size:14.5px;color:var(--brown-soft);margin-top:6px}
+.tag{flex:none;background:var(--terra);color:#FFFDF8;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:5px 10px;border-radius:999px;transform:rotate(3deg);margin-top:2px}
+.rows{list-style:none;margin:14px 0 0;padding:0}
+.row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:2px dashed var(--line)}
+.row .ico{width:44px;height:44px;border-radius:50%;background:var(--cream-2);display:grid;place-items:center}
+.row .ico svg{width:34px;height:34px}
+.row .nm{font-weight:700;font-size:15.5px;line-height:1.25}
+.row .pr{font-size:14px;color:var(--brown-soft)}
+.step{display:flex;align-items:center}
+.step button{width:44px;height:44px;border-radius:50%;border:2px solid var(--brown);background:var(--paper);color:var(--brown);display:grid;place-items:center;padding:0;cursor:pointer;transition:background .12s ease,transform .12s ease}
+.step button svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;fill:none}
+.step button:hover:not(:disabled){background:var(--mustard-soft)}
+.step button:active:not(:disabled){transform:scale(.94)}
+.step button:disabled{opacity:.38;cursor:default}
+.step .qty{min-width:30px;text-align:center;font-weight:800;font-size:18px;font-variant-numeric:tabular-nums}
+.row.has .nm{color:var(--terra-dark)}
+.row.has .ico{background:var(--mustard-soft)}
+.total{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:12px;background:var(--cream-2);border-radius:18px;padding:12px 16px;border:2px solid var(--line)}
+.total .lbl{font-weight:700}
+.total .lbl small{display:block;font-weight:400;font-size:13px;color:var(--brown-soft)}
+.total output{font-family:var(--serif);font-weight:800;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.fields{display:grid;gap:14px;margin-top:16px}
+@media (min-width:640px){.fields{grid-template-columns:1fr 1fr}}
+.field label{display:block;font-weight:700;font-size:14.5px;margin-bottom:6px}
+.field select,.field input{width:100%;height:48px;border:2px solid var(--field);border-radius:14px;background:#fff;color:var(--brown);font:16px/1.2 var(--sans);padding:0 14px}
+.field select{appearance:none;-webkit-appearance:none;padding-right:40px;background-image:linear-gradient(45deg,transparent 50%,var(--brown) 50%),linear-gradient(135deg,var(--brown) 50%,transparent 50%);background-position:calc(100% - 22px) 21px,calc(100% - 16px) 21px;background-size:6px 6px;background-repeat:no-repeat}
+.field input::placeholder{color:#7A6050}
+.field .hint{font-size:13px;color:var(--brown-soft);margin-top:5px}
+.err{display:flex;align-items:flex-start;gap:6px;margin-top:6px;color:#8A2D12;font-weight:700;font-size:14px;line-height:1.35}
+.err svg{width:18px;height:18px;flex:none;margin-top:1px}
+[aria-invalid="true"]{border-color:#8A2D12!important;background-color:#FFF4EF!important}
+.group-err{margin-top:8px}
+.submit{margin-top:18px}
+.fine{font-size:13px;color:var(--brown-soft);margin-top:10px;text-align:center}
+.formnote{margin-top:12px;font-weight:700;color:#8A2D12;font-size:14.5px;text-align:center}
+.done{padding:6px 0 0}
+.done .stamp{display:inline-flex;align-items:center;gap:8px;background:var(--mustard);border:2px solid var(--brown);border-radius:999px;padding:4px 12px;font-weight:800;font-size:13px;transform:rotate(-2deg)}
+.done h3{font-size:25px;margin:14px 0 8px}
+.done h3:focus{outline:none}
+.done p{color:var(--brown-soft);font-size:15px}
+.recap{margin:16px 0 0;padding:14px 16px;border-radius:18px;background:var(--cream-2);border:2px solid var(--line);display:grid;gap:6px;font-size:15px}
+.recap div{display:flex;justify-content:space-between;gap:12px}
+.recap .sum{border-top:2px dashed var(--line);padding-top:8px;margin-top:4px;font-weight:800}
+.done .btn{margin-top:16px}
+
+/* ---------- Wave dividers ---------- */
+.wave{display:block;width:100%;height:28px;fill:var(--cream-2);margin-bottom:-1px}
+.wave.flip{transform:scaleY(-1)}
+
+/* ---------- Menu ---------- */
+.menu{background:var(--cream-2);padding:20px 0 60px}
+.sec-head{max-width:640px;margin-bottom:26px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--terra-dark)}
+.sec-head h2{font-size:clamp(28px,6vw,42px);margin:8px 0 10px}
+.sec-head p{color:var(--brown-soft);font-size:17px}
+.cards{display:grid;gap:16px;grid-template-columns:1fr}
+@media (min-width:640px){.cards{grid-template-columns:1fr 1fr}}
+@media (min-width:960px){.cards{grid-template-columns:repeat(3,1fr);gap:22px}}
+.card{background:var(--paper);border:2px solid var(--brown);border-radius:var(--radius);overflow:hidden;display:grid;grid-template-columns:104px 1fr;position:relative}
+.card .tile{display:grid;place-items:center;padding:10px;border-right:2px solid var(--brown)}
+.card .tile svg{width:84px;height:84px}
+.card .body{padding:14px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.card h3{font-size:20px}
+.card .desc{font-size:14.5px;color:var(--brown-soft);line-height:1.45}
+.card .meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:6px;flex-wrap:wrap}
+.price{font-family:var(--serif);font-weight:800;font-size:21px;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:var(--mustard-soft);border:1.5px solid var(--brown);border-radius:999px;padding:2px 9px;margin-left:6px;vertical-align:3px}
+.inord{font-size:13px;font-weight:700;color:var(--terra-dark)}
+.add{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:999px;border:2px solid var(--brown);background:var(--paper);color:var(--brown);font:700 14.5px/1 var(--sans);cursor:pointer}
+.add:hover{background:var(--mustard-soft)}
+.add svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;fill:none}
+@media (min-width:640px){
+  .card{grid-template-columns:1fr}
+  .card .tile{border-right:0;border-bottom:2px solid var(--brown);padding:18px}
+  .card .tile svg{width:132px;height:110px}
+}
+.pnote{margin:22px 0 0;font-size:14.5px;font-style:italic;color:var(--brown-soft);max-width:70ch}
+.pnote+.allergy{margin-top:8px}
+.catering .pnote{color:#FFFDF8;margin-top:16px}
+.allergy{margin-top:26px;font-size:14.5px;color:var(--brown-soft);max-width:70ch}
+
+/* ---------- Catering ---------- */
+.catering{background:var(--terra);color:#FFFDF8;padding:54px 0;position:relative;overflow:hidden}
+.catering .grid{display:grid;gap:26px}
+.catering .kicker{color:#FFFDF8}
+.catering h2{font-size:clamp(28px,6vw,42px);margin:8px 0 12px}
+.catering p{font-size:17px;max-width:46ch}
+.catering .btn{margin-top:22px;box-shadow:3px 3px 0 var(--brown-deep);border-color:var(--brown-deep)}
+.menu-list{list-style:none;margin:0;padding:0;background:var(--paper);color:var(--brown);border:2px solid var(--brown-deep);border-radius:var(--radius);box-shadow:6px 6px 0 var(--mustard)}
+.menu-list li{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:16px 18px;border-top:2px dashed var(--line)}
+.menu-list li:first-child{border-top:0}
+.menu-list b{display:block;font-size:17px}
+.menu-list span.d{font-size:14px;color:var(--brown-soft)}
+.menu-list .p{font-family:var(--serif);font-weight:800;font-size:22px;white-space:nowrap}
+@media (min-width:860px){.catering .grid{grid-template-columns:1fr 1fr;gap:56px;align-items:center}}
+
+/* ---------- Hours ---------- */
+.visit{padding:60px 0 64px}
+.visit .grid{display:grid;gap:30px}
+@media (min-width:860px){.visit .grid{grid-template-columns:1fr 1fr;gap:56px;align-items:center}}
+.status{display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:2px solid var(--brown);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14.5px;margin-bottom:16px}
+.status i{width:10px;height:10px;border-radius:50%;background:var(--field);display:inline-block}
+.status.open i{background:#2E7D4F}
+table.hours{border-collapse:collapse;width:100%;max-width:480px;font-size:17px}
+table.hours th,table.hours td{padding:12px 0;border-bottom:2px dashed var(--line);text-align:left;font-weight:400}
+table.hours th{font-weight:700}
+table.hours td{text-align:right;font-variant-numeric:tabular-nums}
+table.hours tr.today th,table.hours tr.today td{color:var(--terra-dark);font-weight:800}
+table.hours tr.closed td{color:var(--brown-soft)}
+.address{margin-top:20px;font-size:17px}
+.address a{font-weight:700;display:inline-flex;align-items:center;min-height:44px}
+.shopfront{background:var(--mustard-soft);border:2px solid var(--brown);border-radius:var(--radius);padding:14px;box-shadow:6px 6px 0 var(--terra)}
+.shopfront svg{width:100%;height:auto}
+
+/* ---------- Footer ---------- */
+.foot{background:var(--brown-deep);color:#FBF4E8;padding:34px 0 30px}
+.foot .wrap{display:grid;gap:16px}
+.foot b{font-family:var(--serif);font-size:20px}
+.foot p{font-size:14.5px;color:#E9DCC8}
+.foot a{color:#F4C25B;font-weight:700}
+.foot .links{display:flex;flex-wrap:wrap;gap:4px 18px}
+.foot .links a{display:inline-flex;align-items:center;min-height:44px;min-width:44px}
+@media (min-width:860px){.foot .wrap{grid-template-columns:1fr auto;align-items:end}}
+
+/* ---------- Order bar ---------- */
+.ordbar{position:fixed;left:16px;right:16px;bottom:14px;margin:0 auto;max-width:440px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:6px 8px 6px 20px;border-radius:999px;background:var(--brown-deep);color:#FBF4E8;border:2px solid #FBF4E8;text-decoration:none;font-weight:700;box-shadow:0 8px 24px rgba(43,26,18,.35)}
+.ordbar:hover{background:#3d281c}
+.ordbar .go{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;background:var(--mustard);color:var(--brown);font-weight:800}
+.ordbar:focus-visible{outline-color:var(--mustard)}
+body.has-bar{padding-bottom:88px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- Drawings: one sprite, reused. Hand-drawn feel: round joins, slightly uneven curves. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="d-boule" viewBox="0 0 120 100">
+      <ellipse cx="61" cy="93" rx="42" ry="4" fill="#3B2418" opacity=".14"/>
+      <path d="M11 72C7 41 33 15 61 15C91 15 114 40 109 72C107 85 94 90 60 90C26 90 13 85 11 72Z" fill="#D98B4A" stroke="#3B2418" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M20 74C22 58 30 46 40 38" fill="none" stroke="#F0B67A" stroke-width="4" stroke-linecap="round"/>
+      <path d="M37 36C46 44 51 57 49 71" fill="none" stroke="#F8DDAE" stroke-width="7" stroke-linecap="round"/>
+      <path d="M59 29C66 41 68 57 65 75" fill="none" stroke="#F8DDAE" stroke-width="7" stroke-linecap="round"/>
+      <path d="M83 36C81 47 77 58 75 70" fill="none" stroke="#F8DDAE" stroke-width="7" stroke-linecap="round"/>
+      <path d="M37 36C46 44 51 57 49 71M59 29C66 41 68 57 65 75M83 36C81 47 77 58 75 70" fill="none" stroke="#3B2418" stroke-width="1.6" stroke-linecap="round" opacity=".55" transform="translate(3 2)"/>
+      <circle cx="26" cy="52" r="1.8" fill="#FFF8EC"/><circle cx="98" cy="58" r="1.6" fill="#FFF8EC"/><circle cx="92" cy="72" r="1.8" fill="#FFF8EC"/><circle cx="30" cy="70" r="1.5" fill="#FFF8EC"/><circle cx="70" cy="24" r="1.6" fill="#FFF8EC"/>
+    </symbol>
+
+    <symbol id="d-rye" viewBox="0 0 140 90">
+      <ellipse cx="72" cy="84" rx="52" ry="4" fill="#3B2418" opacity=".14"/>
+      <path d="M9 58C7 33 31 18 71 18C111 18 134 33 132 58C131 74 113 79 71 79C29 79 10 74 9 58Z" fill="#B87440" stroke="#3B2418" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M20 62C22 44 34 34 50 29" fill="none" stroke="#D49A62" stroke-width="4" stroke-linecap="round"/>
+      <path d="M36 33L47 66M57 30L68 68M78 30L89 68M99 33L109 64" fill="none" stroke="#EBC58C" stroke-width="7" stroke-linecap="round"/>
+      <g fill="#F6E3BE" stroke="#3B2418" stroke-width=".8">
+        <ellipse cx="26" cy="48" rx="3.2" ry="1.8" transform="rotate(-30 26 48)"/>
+        <ellipse cx="116" cy="46" rx="3.2" ry="1.8" transform="rotate(25 116 46)"/>
+        <ellipse cx="54" cy="52" rx="3" ry="1.7" transform="rotate(15 54 52)"/>
+        <ellipse cx="86" cy="50" rx="3" ry="1.7" transform="rotate(-20 86 50)"/>
+        <ellipse cx="70" cy="40" rx="3" ry="1.7" transform="rotate(40 70 40)"/>
+        <ellipse cx="108" cy="64" rx="3" ry="1.7" transform="rotate(10 108 64)"/>
+        <ellipse cx="34" cy="66" rx="3" ry="1.7" transform="rotate(-10 34 66)"/>
+        <ellipse cx="94" cy="68" rx="3" ry="1.7" transform="rotate(35 94 68)"/>
+      </g>
+    </symbol>
+
+    <symbol id="d-croissant" viewBox="0 0 130 90">
+      <ellipse cx="65" cy="82" rx="50" ry="4" fill="#3B2418" opacity=".14"/>
+      <g fill="#E4A04F" stroke="#3B2418" stroke-width="3" stroke-linejoin="round">
+        <ellipse cx="16" cy="63" rx="11" ry="7.5" transform="rotate(-58 16 63)"/>
+        <ellipse cx="114" cy="63" rx="11" ry="7.5" transform="rotate(58 114 63)"/>
+        <ellipse cx="32" cy="49" rx="18" ry="13" transform="rotate(-42 32 49)"/>
+        <ellipse cx="98" cy="49" rx="18" ry="13" transform="rotate(42 98 49)"/>
+        <ellipse cx="49" cy="40" rx="19" ry="17" transform="rotate(-16 49 40)"/>
+        <ellipse cx="81" cy="40" rx="19" ry="17" transform="rotate(16 81 40)"/>
+        <ellipse cx="65" cy="37" rx="19" ry="22"/>
+      </g>
+      <g fill="none" stroke="#F8D69A" stroke-width="3.2" stroke-linecap="round">
+        <path d="M55 22C60 16 70 16 75 22"/>
+        <path d="M37 30C41 25 47 24 52 26"/>
+        <path d="M93 30C89 25 83 24 78 26"/>
+        <path d="M20 42C23 38 28 37 31 38"/>
+        <path d="M110 42C107 38 102 37 99 38"/>
+      </g>
+      <g fill="none" stroke="#3B2418" stroke-width="1.6" stroke-linecap="round" opacity=".5">
+        <path d="M58 40C62 44 68 44 72 40"/>
+        <path d="M44 52C48 55 53 55 56 53"/>
+        <path d="M86 52C82 55 77 55 74 53"/>
+      </g>
+    </symbol>
+
+    <symbol id="d-bun" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="92" rx="34" ry="4" fill="#3B2418" opacity=".14"/>
+      <path d="M50 14C74 13 90 30 90 52C90 74 74 87 50 87C26 87 10 74 10 52C10 30 26 15 50 14Z" fill="#E0A058" stroke="#3B2418" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M50 52C54 51 57 55 54 59C50 63 42 60 42 52C42 43 52 38 59 42C68 47 69 60 61 67C51 75 35 70 31 57C27 42 40 29 55 29C71 29 80 42 78 54" fill="none" stroke="#F8DDAE" stroke-width="5" stroke-linecap="round"/>
+      <path d="M50 52C54 51 57 55 54 59C50 63 42 60 42 52C42 43 52 38 59 42C68 47 69 60 61 67C51 75 35 70 31 57C27 42 40 29 55 29C71 29 80 42 78 54" fill="none" stroke="#3B2418" stroke-width="1.5" stroke-linecap="round" opacity=".5" transform="translate(1.5 2)"/>
+      <circle cx="22" cy="40" r="2" fill="#FFF8EC"/><circle cx="82" cy="68" r="2" fill="#FFF8EC"/><circle cx="70" cy="22" r="1.8" fill="#FFF8EC"/><circle cx="28" cy="72" r="1.8" fill="#FFF8EC"/><circle cx="84" cy="40" r="1.8" fill="#FFF8EC"/>
+    </symbol>
+
+    <symbol id="d-cup" viewBox="0 0 120 100">
+      <path d="M44 27C38 19 50 15 44 6M62 27C56 19 68 15 62 6" fill="none" stroke="#3B2418" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+      <ellipse cx="58" cy="87" rx="46" ry="9" fill="#F8DDAE" stroke="#3B2418" stroke-width="3"/>
+      <path d="M95 47C113 44 114 70 91 70" fill="none" stroke="#3B2418" stroke-width="10" stroke-linecap="round"/>
+      <path d="M95 47C113 44 114 70 91 70" fill="none" stroke="#C2563A" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M19 38L97 38C97 66 86 82 58 82C30 82 19 66 19 38Z" fill="#C2563A" stroke="#3B2418" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M21 54C40 61 76 61 95 54" fill="none" stroke="#E8A92D" stroke-width="6" stroke-linecap="round"/>
+      <path d="M28 46C29 56 33 66 40 72" fill="none" stroke="#F1B79F" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="58" cy="38" rx="39" ry="8.5" fill="#5A3320" stroke="#3B2418" stroke-width="3.2"/>
+      <ellipse cx="46" cy="37" rx="12" ry="2.6" fill="#7A4A2E"/>
+    </symbol>
+
+    <symbol id="d-latte" viewBox="0 0 120 100">
+      <path d="M44 27C38 19 50 15 44 6M62 27C56 19 68 15 62 6" fill="none" stroke="#3B2418" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+      <ellipse cx="58" cy="87" rx="46" ry="9" fill="#F8DDAE" stroke="#3B2418" stroke-width="3"/>
+      <path d="M95 47C113 44 114 70 91 70" fill="none" stroke="#3B2418" stroke-width="10" stroke-linecap="round"/>
+      <path d="M95 47C113 44 114 70 91 70" fill="none" stroke="#F8DDAE" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M19 38L97 38C97 66 86 82 58 82C30 82 19 66 19 38Z" fill="#F8DDAE" stroke="#3B2418" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M21 54C40 61 76 61 95 54" fill="none" stroke="#C2563A" stroke-width="6" stroke-linecap="round"/>
+      <ellipse cx="58" cy="38" rx="39" ry="8.5" fill="#D8B48A" stroke="#3B2418" stroke-width="3.2"/>
+      <path d="M58 33C47 34 44 40 51 42C54 43 56 41 58 41C60 41 62 43 65 42C72 40 69 34 58 33Z" fill="#FBF4E8" stroke="#3B2418" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M58 34L58 41" stroke="#3B2418" stroke-width="1.2" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="d-logo" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="22" fill="#B4492A" stroke="#3B2418" stroke-width="2.4"/>
+      <path d="M24 38V14" stroke="#FBF4E8" stroke-width="2.4" stroke-linecap="round"/>
+      <g fill="#E8A92D" stroke="#3B2418" stroke-width="1.4" stroke-linejoin="round">
+        <path d="M24 16c-4-1-6-4-5-7 4 0 6 3 5 7z"/>
+        <path d="M24 16c4-1 6-4 5-7-4 0-6 3-5 7z"/>
+        <path d="M24 25c-5-1-7-4-6-8 5 0 7 4 6 8z"/>
+        <path d="M24 25c5-1 7-4 6-8-5 0-7 4-6 8z"/>
+        <path d="M24 34c-5-1-7-4-6-8 5 0 7 4 6 8z"/>
+        <path d="M24 34c5-1 7-4 6-8-5 0-7 4-6 8z"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="samplebar" role="region" aria-label="Sample site notice">
+  <div class="wrap">
+    <p><strong>Sample site by Tony Benson.</strong> This business is made up.</p>
+    <a href="../../index.html#samples">Back to portfolio</a>
+  </div>
+</div>
+
+<a class="skip" href="#order">Skip to the order form</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Wren Street Bakery and Coffee, top of page">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><use href="#d-logo"/></svg>
+      <span><b>Wren Street</b><small>Bakery &amp; Coffee</small></span>
+    </a>
+    <div class="head-right">
+      <nav class="nav" aria-label="Sections">
+        <a href="#menu">Today's menu</a>
+        <a href="#catering">Catering</a>
+        <a href="#visit">Hours</a>
+      </nav>
+      <a class="btn small" href="tel:+15555550142" aria-label="Call Wren Street Bakery at (555) 555-0142">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+        Call
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== Hero with order card ===== -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+
+      <div class="hero-copy">
+        <span class="eyebrow">Bread, pastry and coffee</span>
+        <h1 id="hero-title">Warm bread, <span class="squig">ready<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6Q14 0 26 5T50 5T74 5T98 5"/></svg></span> when you walk in.</h1>
+        <p class="lede">We bake in small batches from 4 a.m. Order ahead and your bag waits at the counter with your name on it.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#order">Order ahead</a>
+          <a class="btn alt" href="#menu">See today's menu</a>
+        </div>
+        <svg class="still" viewBox="0 0 460 236" role="img" aria-label="Drawing of a round loaf, a croissant and a cup of coffee on a counter">
+          <path d="M6 214C150 207 310 220 454 211" fill="none" stroke="#3B2418" stroke-width="3.2" stroke-linecap="round"/>
+          <use href="#d-boule" x="14" y="62" width="196" height="163"/>
+          <use href="#d-croissant" x="206" y="128" width="136" height="94"/>
+          <use href="#d-cup" x="334" y="108" width="122" height="102"/>
+          <g transform="rotate(-9 372 56)">
+            <circle cx="372" cy="56" r="48" fill="#E8A92D" stroke="#3B2418" stroke-width="3"/>
+            <circle cx="372" cy="56" r="40" fill="none" stroke="#3B2418" stroke-width="1.4" stroke-dasharray="3 4"/>
+            <text x="372" y="50" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="11.5" fill="#3B2418">Baked from</text>
+            <text x="372" y="72" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="20" fill="#3B2418">4 a.m.</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="order" id="order" tabindex="-1">
+        <div id="order-main">
+          <div class="order-head">
+            <div>
+              <h2>Order ahead for pickup</h2>
+              <p class="sub">Pay at the counter. We hold your bag for 30 minutes past your pickup time.</p>
+            </div>
+            <span class="tag" aria-hidden="true">No lines</span>
+          </div>
+
+          <form id="order-form" novalidate>
+            <div role="group" aria-labelledby="items-label">
+              <span id="items-label" style="position:absolute;left:-9999px">Pick your items</span>
+              <ul class="rows" id="rows">
+                <li class="row" data-id="sourdough" data-price="850" data-name="Country sourdough">
+                  <span class="ico"><svg viewBox="0 0 120 100" aria-hidden="true"><use href="#d-boule"/></svg></span>
+                  <span><span class="nm" id="n-sourdough">Country sourdough</span><br><span class="pr">$8.50 a loaf</span></span>
+                  <span class="step">
+                    <button type="button" data-dec aria-label="Remove one country sourdough" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+                    <span class="qty" data-qty aria-live="polite" aria-label="Quantity">0</span>
+                    <button type="button" data-inc aria-label="Add one country sourdough"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg></button>
+                  </span>
+                </li>
+                <li class="row" data-id="rye" data-price="900" data-name="Seeded rye">
+                  <span class="ico"><svg viewBox="0 0 140 90" aria-hidden="true"><use href="#d-rye"/></svg></span>
+                  <span><span class="nm" id="n-rye">Seeded rye</span><br><span class="pr">$9.00 a loaf</span></span>
+                  <span class="step">
+                    <button type="button" data-dec aria-label="Remove one seeded rye" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+                    <span class="qty" data-qty aria-live="polite" aria-label="Quantity">0</span>
+                    <button type="button" data-inc aria-label="Add one seeded rye"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg></button>
+                  </span>
+                </li>
+                <li class="row" data-id="croissant" data-price="425" data-name="Butter croissant">
+                  <span class="ico"><svg viewBox="0 0 130 90" aria-hidden="true"><use href="#d-croissant"/></svg></span>
+                  <span><span class="nm" id="n-croissant">Butter croissant</span><br><span class="pr">$4.25 each</span></span>
+                  <span class="step">
+                    <button type="button" data-dec aria-label="Remove one butter croissant" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+                    <span class="qty" data-qty aria-live="polite" aria-label="Quantity">0</span>
+                    <button type="button" data-inc aria-label="Add one butter croissant"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg></button>
+                  </span>
+                </li>
+                <li class="row" data-id="knot" data-price="475" data-name="Cardamom knot">
+                  <span class="ico"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#d-bun"/></svg></span>
+                  <span><span class="nm" id="n-knot">Cardamom knot</span><br><span class="pr">$4.75 each</span></span>
+                  <span class="step">
+                    <button type="button" data-dec aria-label="Remove one cardamom knot" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+                    <span class="qty" data-qty aria-live="polite" aria-label="Quantity">0</span>
+                    <button type="button" data-inc aria-label="Add one cardamom knot"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg></button>
+                  </span>
+                </li>
+                <li class="row" data-id="drip" data-price="300" data-name="Drip coffee">
+                  <span class="ico"><svg viewBox="0 0 120 100" aria-hidden="true"><use href="#d-cup"/></svg></span>
+                  <span><span class="nm" id="n-drip">Drip coffee</span><br><span class="pr">$3.00, 12 oz</span></span>
+                  <span class="step">
+                    <button type="button" data-dec aria-label="Remove one drip coffee" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+                    <span class="qty" data-qty aria-live="polite" aria-label="Quantity">0</span>
+                    <button type="button" data-inc aria-label="Add one drip coffee"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg></button>
+                  </span>
+                </li>
+                <li class="row" data-id="latte" data-price="525" data-name="Maple oat latte">
+                  <span class="ico"><svg viewBox="0 0 120 100" aria-hidden="true"><use href="#d-latte"/></svg></span>
+                  <span><span class="nm" id="n-latte">Maple oat latte</span><br><span class="pr">$5.25 each</span></span>
+                  <span class="step">
+                    <button type="button" data-dec aria-label="Remove one maple oat latte" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+                    <span class="qty" data-qty aria-live="polite" aria-label="Quantity">0</span>
+                    <button type="button" data-inc aria-label="Add one maple oat latte"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg></button>
+                  </span>
+                </li>
+              </ul>
+              <p class="err group-err" id="e-items" role="alert" hidden></p>
+            </div>
+
+            <div class="total">
+              <span class="lbl">Total<small id="count-line">Nothing in your order yet</small></span>
+              <output id="total" for="rows" aria-live="polite">$0.00</output>
+            </div>
+
+            <div class="fields">
+              <div class="field">
+                <label for="day">Pickup day</label>
+                <select id="day" name="day" aria-describedby="e-day"></select>
+                <p class="err" id="e-day" hidden></p>
+              </div>
+              <div class="field">
+                <label for="time">Pickup time</label>
+                <select id="time" name="time" aria-describedby="e-time" required></select>
+                <p class="err" id="e-time" hidden></p>
+              </div>
+              <div class="field">
+                <label for="cname">Name for the bag</label>
+                <input id="cname" name="name" type="text" autocomplete="name" placeholder="First name is fine" aria-describedby="e-name" required>
+                <p class="err" id="e-name" hidden></p>
+              </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 555-0142" aria-describedby="e-phone" required>
+                <p class="err" id="e-phone" hidden></p>
+              </div>
+            </div>
+
+            <button class="btn block submit" type="submit">Place pickup order</button>
+            <p class="formnote" id="formnote" role="alert" hidden></p>
+            <p class="fine">Sample form. It sends nothing and stores nothing.</p>
+            <noscript><p class="fine">The order form needs JavaScript to add up your total.</p></noscript>
+          </form>
+        </div>
+
+        <div class="done" id="done" hidden>
+          <span class="stamp">Sample order</span>
+          <h3 id="done-title" tabindex="-1">This is a sample, so nothing was sent.</h3>
+          <p>Here is the order a real shop would have received.</p>
+          <div class="recap" id="recap"></div>
+          <button class="btn alt" type="button" id="again">Start a new sample order</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Today's menu ===== -->
+  <svg class="wave" viewBox="0 0 1440 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 28V14Q60 0 120 14T240 14T360 14T480 14T600 14T720 14T840 14T960 14T1080 14T1200 14T1320 14T1440 14V28Z"/></svg>
+  <section class="menu" id="menu" aria-labelledby="menu-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="kicker">Today's menu</p>
+        <h2 id="menu-title">Baked this morning</h2>
+        <p>Six things, done properly. When a tray is empty, it is empty until tomorrow.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card" data-card="sourdough">
+          <div class="tile" style="background:var(--mustard-soft)"><svg viewBox="0 0 120 100" aria-hidden="true"><use href="#d-boule"/></svg></div>
+          <div class="body">
+            <h3>Country sourdough <span class="pill">Vegan</span></h3>
+            <p class="desc">A tall loaf with a crackly crust and a slow 24-hour rise. Our house bread.</p>
+            <div class="meta">
+              <span class="price">$8.50</span>
+              <button class="add" type="button" data-add="sourdough" aria-label="Add country sourdough to your order"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg>Add</button>
+            </div>
+            <span class="inord" data-inord="sourdough" hidden></span>
+          </div>
+        </article>
+
+        <article class="card" data-card="rye">
+          <div class="tile" style="background:var(--terra-soft)"><svg viewBox="0 0 140 90" aria-hidden="true"><use href="#d-rye"/></svg></div>
+          <div class="body">
+            <h3>Seeded rye <span class="pill">Vegan</span></h3>
+            <p class="desc">Caraway, sunflower and sesame in a dense, damp crumb. Good toasted, better with butter.</p>
+            <div class="meta">
+              <span class="price">$9.00</span>
+              <button class="add" type="button" data-add="rye" aria-label="Add seeded rye to your order"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg>Add</button>
+            </div>
+            <span class="inord" data-inord="rye" hidden></span>
+          </div>
+        </article>
+
+        <article class="card" data-card="croissant">
+          <div class="tile" style="background:var(--tan)"><svg viewBox="0 0 130 90" aria-hidden="true"><use href="#d-croissant"/></svg></div>
+          <div class="body">
+            <h3>Butter croissant</h3>
+            <p class="desc">Folded by hand and baked dark. Shatters outside, soft and open inside.</p>
+            <div class="meta">
+              <span class="price">$4.25</span>
+              <button class="add" type="button" data-add="croissant" aria-label="Add butter croissant to your order"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg>Add</button>
+            </div>
+            <span class="inord" data-inord="croissant" hidden></span>
+          </div>
+        </article>
+
+        <article class="card" data-card="knot">
+          <div class="tile" style="background:var(--tan)"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#d-bun"/></svg></div>
+          <div class="body">
+            <h3>Cardamom knot</h3>
+            <p class="desc">Twisted, brushed with sugar syrup, with a little orange zest. Gone by ten most days.</p>
+            <div class="meta">
+              <span class="price">$4.75</span>
+              <button class="add" type="button" data-add="knot" aria-label="Add cardamom knot to your order"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg>Add</button>
+            </div>
+            <span class="inord" data-inord="knot" hidden></span>
+          </div>
+        </article>
+
+        <article class="card" data-card="drip">
+          <div class="tile" style="background:var(--mustard-soft)"><svg viewBox="0 0 120 100" aria-hidden="true"><use href="#d-cup"/></svg></div>
+          <div class="body">
+            <h3>Drip coffee</h3>
+            <p class="desc">Twelve ounces of the week's house roast, from a roaster two towns over. Refills are $1.</p>
+            <div class="meta">
+              <span class="price">$3.00</span>
+              <button class="add" type="button" data-add="drip" aria-label="Add drip coffee to your order"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg>Add</button>
+            </div>
+            <span class="inord" data-inord="drip" hidden></span>
+          </div>
+        </article>
+
+        <article class="card" data-card="latte">
+          <div class="tile" style="background:var(--terra-soft)"><svg viewBox="0 0 120 100" aria-hidden="true"><use href="#d-latte"/></svg></div>
+          <div class="body">
+            <h3>Maple oat latte</h3>
+            <p class="desc">A double shot, oat milk and a spoonful of maple. Hot or iced, just say which at the counter.</p>
+            <div class="meta">
+              <span class="price">$5.25</span>
+              <button class="add" type="button" data-add="latte" aria-label="Add maple oat latte to your order"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg>Add</button>
+            </div>
+            <span class="inord" data-inord="latte" hidden></span>
+          </div>
+        </article>
+      </div>
+
+      <p class="pnote">Prices on this sample site are made up for illustration.</p>
+      <p class="allergy">Everything is made in one kitchen that handles wheat, milk, eggs, tree nuts and sesame. Ask at the counter if you need to check an ingredient.</p>
+    </div>
+  </section>
+
+  <!-- ===== Catering ===== -->
+  <section class="catering dark" id="catering" aria-labelledby="cat-title">
+    <div class="wrap grid">
+      <div>
+        <p class="kicker">Catering</p>
+        <h2 id="cat-title">Feeding the office, or a party</h2>
+        <p>Pastry platters, breakfast boxes and coffee in a carry box, ready at the counter or dropped off within five miles. We need two days' notice, and a call is the fastest way to book.</p>
+        <a class="btn sun" href="tel:+15555550142">Call (555) 555-0142</a>
+      </div>
+      <div>
+      <ul class="menu-list" aria-label="Catering prices">
+        <li><span><b>Pastry platter</b><span class="d">Croissants and knots, feeds 10</span></span><span class="p">$38</span></li>
+        <li><span><b>Breakfast box</b><span class="d">Pastry, fruit and a loaf, feeds 10</span></span><span class="p">$64</span></li>
+        <li><span><b>Coffee carry box</b><span class="d">96 oz of drip with cups and lids</span></span><span class="p">$24</span></li>
+      </ul>
+      <p class="pnote">Prices on this sample site are made up for illustration.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Hours ===== -->
+  <section class="visit" id="visit" aria-labelledby="visit-title">
+    <div class="wrap grid">
+      <div>
+        <p class="kicker">Hours</p>
+        <h2 id="visit-title" style="font-size:clamp(28px,6vw,42px);margin:8px 0 16px">Come by, or order ahead</h2>
+        <p class="status" id="status" role="status"><i></i><span id="status-text">Open Tuesday to Sunday</span></p>
+        <table class="hours" id="hours">
+          <caption style="position:absolute;left:-9999px">Opening hours</caption>
+          <tbody>
+            <tr data-d="1" class="closed"><th scope="row">Monday</th><td>Closed</td></tr>
+            <tr data-d="2"><th scope="row">Tuesday</th><td>6:30 am to 3 pm</td></tr>
+            <tr data-d="3"><th scope="row">Wednesday</th><td>6:30 am to 3 pm</td></tr>
+            <tr data-d="4"><th scope="row">Thursday</th><td>6:30 am to 3 pm</td></tr>
+            <tr data-d="5"><th scope="row">Friday</th><td>6:30 am to 3 pm</td></tr>
+            <tr data-d="6"><th scope="row">Saturday</th><td>7 am to 3 pm</td></tr>
+            <tr data-d="0"><th scope="row">Sunday</th><td>8 am to 1 pm</td></tr>
+          </tbody>
+        </table>
+        <p class="address">123 Main Street, Your Town<br><a href="tel:+15555550142">(555) 555-0142</a></p>
+      </div>
+      <div class="shopfront">
+        <svg viewBox="0 0 300 226" role="img" aria-label="Drawing of the bakery storefront with a striped awning, a window of bread and an open door">
+          <rect x="22" y="20" width="256" height="190" rx="10" fill="#FBF4E8" stroke="#3B2418" stroke-width="3"/>
+          <rect x="58" y="6" width="184" height="32" rx="9" fill="#3B2418"/>
+          <text x="150" y="28" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="16" letter-spacing="2" fill="#FBF4E8">WREN STREET</text>
+          <g stroke="#3B2418" stroke-width="3" stroke-linejoin="round">
+            <path d="M30 44h40v32a20 20 0 0 1-40 0z" fill="#B4492A"/>
+            <path d="M70 44h40v32a20 20 0 0 1-40 0z" fill="#FBF4E8"/>
+            <path d="M110 44h40v32a20 20 0 0 1-40 0z" fill="#B4492A"/>
+            <path d="M150 44h40v32a20 20 0 0 1-40 0z" fill="#FBF4E8"/>
+            <path d="M190 44h40v32a20 20 0 0 1-40 0z" fill="#B4492A"/>
+            <path d="M230 44h40v32a20 20 0 0 1-40 0z" fill="#FBF4E8"/>
+          </g>
+          <rect x="40" y="108" width="116" height="84" rx="10" fill="#F7D98A" stroke="#3B2418" stroke-width="3"/>
+          <path d="M44 166h108" stroke="#3B2418" stroke-width="3" stroke-linecap="round"/>
+          <use href="#d-boule" x="48" y="126" width="54" height="45"/>
+          <use href="#d-croissant" x="100" y="136" width="48" height="34"/>
+          <rect x="176" y="108" width="82" height="102" rx="10" fill="#B4492A" stroke="#3B2418" stroke-width="3"/>
+          <rect x="186" y="118" width="62" height="46" rx="8" fill="#F7D98A" stroke="#3B2418" stroke-width="2.4"/>
+          <circle cx="188" cy="190" r="4.5" fill="#E8A92D" stroke="#3B2418" stroke-width="2"/>
+          <g transform="rotate(-6 217 140)">
+            <rect x="196" y="130" width="42" height="20" rx="6" fill="#E8A92D" stroke="#3B2418" stroke-width="2"/>
+            <text x="217" y="144.5" text-anchor="middle" font-family="system-ui,Arial,sans-serif" font-weight="800" font-size="11" letter-spacing="1" fill="#3B2418">OPEN</text>
+          </g>
+          <path d="M6 212h288" stroke="#3B2418" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot dark">
+  <div class="wrap">
+    <div>
+      <b>Wren Street Bakery &amp; Coffee</b>
+      <p>123 Main Street, Your Town &middot; (555) 555-0142</p>
+      <p>Sample site by Tony Benson. This business is made up.</p>
+    </div>
+    <div class="links">
+      <a href="#order">Order ahead</a>
+      <a href="#menu">Menu</a>
+      <a href="../../index.html#samples">Back to the portfolio</a>
+    </div>
+  </div>
+</footer>
+
+<a class="ordbar" id="ordbar" href="#order" hidden>
+  <span id="ordbar-text">0 items &middot; $0.00</span>
+  <span class="go">View order</span>
+</a>
+
+<script>
+(function () {
+  'use strict';
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  var MAXQ = 12;
+  var HOURS = { 0: [8, 13], 1: null, 2: [6.5, 15], 3: [6.5, 15], 4: [6.5, 15], 5: [6.5, 15], 6: [7, 15] };
+  var DN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var DS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  function money(c) { return '$' + (c / 100).toFixed(2); }
+  function t12(h) {
+    var hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+    return (hh % 12 || 12) + ':' + (mm < 10 ? '0' : '') + mm + ' ' + (hh >= 12 ? 'pm' : 'am');
+  }
+  function short(h) { return t12(h).replace(':00', ''); }
+
+  /* ---------- Order state ---------- */
+  var rows = $$('.row[data-id]');
+  var qty = {};
+  var price = {};
+  var names = {};
+  rows.forEach(function (r) {
+    qty[r.getAttribute('data-id')] = 0;
+    price[r.getAttribute('data-id')] = parseInt(r.getAttribute('data-price'), 10);
+    names[r.getAttribute('data-id')] = r.getAttribute('data-name');
+  });
+
+  var totalEl = $('#total'), countLine = $('#count-line');
+  var bar = $('#ordbar'), barText = $('#ordbar-text');
+  var cardInView = false, submitted = false;
+
+  function totals() {
+    var n = 0, c = 0;
+    Object.keys(qty).forEach(function (k) { n += qty[k]; c += qty[k] * price[k]; });
+    return { n: n, c: c };
+  }
+
+  function render() {
+    rows.forEach(function (r) {
+      var id = r.getAttribute('data-id'), q = qty[id];
+      $('[data-qty]', r).textContent = q;
+      $('[data-dec]', r).disabled = q <= 0;
+      $('[data-inc]', r).disabled = q >= MAXQ;
+      r.classList.toggle('has', q > 0);
+    });
+    $$('[data-inord]').forEach(function (s) {
+      var q = qty[s.getAttribute('data-inord')];
+      s.hidden = q <= 0;
+      s.textContent = q > 0 ? q + ' in your order' : '';
+    });
+    var t = totals();
+    totalEl.textContent = money(t.c);
+    countLine.textContent = t.n === 0 ? 'Nothing in your order yet' : t.n + (t.n === 1 ? ' item' : ' items');
+    barText.textContent = t.n + (t.n === 1 ? ' item' : ' items') + ' · ' + money(t.c);
+    if (t.n > 0) { clearErr('items'); }
+    updateBar();
+  }
+
+  function updateBar() {
+    var show = totals().n > 0 && !cardInView && !submitted;
+    bar.hidden = !show;
+    document.body.classList.toggle('has-bar', show);
+  }
+
+  function change(id, d) {
+    var q = qty[id] + d;
+    if (q < 0 || q > MAXQ) { return; }
+    qty[id] = q;
+    render();
+  }
+
+  rows.forEach(function (r) {
+    var id = r.getAttribute('data-id');
+    $('[data-inc]', r).addEventListener('click', function () { change(id, 1); });
+    $('[data-dec]', r).addEventListener('click', function () { change(id, -1); });
+  });
+  $$('[data-add]').forEach(function (b) {
+    b.addEventListener('click', function () { change(b.getAttribute('data-add'), 1); });
+  });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (e) {
+      cardInView = e[0].isIntersecting;
+      updateBar();
+    }, { threshold: 0.15 }).observe($('#order'));
+  }
+
+  /* ---------- Pickup day and time ---------- */
+  var daySel = $('#day'), timeSel = $('#time');
+  var days = [];
+
+  function slotsFor(date, isToday, now) {
+    var t = HOURS[date.getDay()], out = [];
+    if (!t) { return out; }
+    var min = isToday ? now.getHours() + now.getMinutes() / 60 + 0.75 : -1;
+    for (var h = t[0]; h <= t[1] - 0.5; h += 0.5) {
+      if (h >= min) { out.push(h); }
+    }
+    return out;
+  }
+
+  function buildDays() {
+    var now = new Date();
+    days = [];
+    for (var i = 0; i < 10 && days.length < 5; i++) {
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+      var s = slotsFor(d, i === 0, now);
+      if (!s.length) { continue; }
+      var stamp = DS[d.getDay()] + ' ' + MS[d.getMonth()] + ' ' + d.getDate();
+      var label = i === 0 ? 'Today, ' + stamp : i === 1 ? 'Tomorrow, ' + stamp : stamp;
+      days.push({ label: label, slots: s });
+    }
+    daySel.innerHTML = '';
+    days.forEach(function (d, i) {
+      var o = document.createElement('option');
+      o.value = String(i);
+      o.textContent = d.label;
+      daySel.appendChild(o);
+    });
+    buildTimes();
+  }
+
+  function buildTimes() {
+    var keep = timeSel.value;
+    var d = days[parseInt(daySel.value, 10)];
+    timeSel.innerHTML = '';
+    var ph = document.createElement('option');
+    ph.value = '';
+    ph.textContent = 'Choose a time';
+    timeSel.appendChild(ph);
+    if (d) {
+      d.slots.forEach(function (h) {
+        var o = document.createElement('option');
+        o.value = String(h);
+        o.textContent = t12(h);
+        timeSel.appendChild(o);
+      });
+    }
+    if (keep) { timeSel.value = keep; if (timeSel.value !== keep) { timeSel.value = ''; } }
+  }
+
+  daySel.addEventListener('change', buildTimes);
+  buildDays();
+
+  /* ---------- Validation ---------- */
+  var form = $('#order-form'), note = $('#formnote');
+  var ERR_ICON = '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 5.5v5.5M10 14v.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+  var fieldFor = { items: null, day: daySel, time: timeSel, name: $('#cname'), phone: $('#phone') };
+
+  function setErr(key, msg) {
+    var el = $('#e-' + key);
+    el.innerHTML = ERR_ICON + '<span></span>';
+    el.lastChild.textContent = msg;
+    el.hidden = false;
+    if (fieldFor[key]) { fieldFor[key].setAttribute('aria-invalid', 'true'); }
+  }
+  function clearErr(key) {
+    var el = $('#e-' + key);
+    if (!el) { return; }
+    el.hidden = true;
+    el.innerHTML = '';
+    if (fieldFor[key]) { fieldFor[key].removeAttribute('aria-invalid'); }
+  }
+
+  function check() {
+    var bad = [];
+    if (totals().n === 0) { bad.push(['items', 'Add at least one item to your order.']); }
+    if (!daySel.value) { bad.push(['day', 'Choose a pickup day.']); }
+    if (!timeSel.value) { bad.push(['time', 'Choose a pickup time.']); }
+    var nm = fieldFor.name.value.replace(/\s+/g, ' ').trim();
+    if (nm.length < 2) { bad.push(['name', 'Enter a name so we can find your bag.']); }
+    var digits = fieldFor.phone.value.replace(/\D/g, '');
+    if (digits.length === 11 && digits.charAt(0) === '1') { digits = digits.slice(1); }
+    if (digits.length !== 10) { bad.push(['phone', 'Enter a 10-digit phone number, like (555) 555-0142.']); }
+    return { bad: bad, name: nm, digits: digits };
+  }
+
+  ['name', 'phone'].forEach(function (k) {
+    fieldFor[k].addEventListener('input', function () { clearErr(k); note.hidden = true; });
+  });
+  daySel.addEventListener('change', function () { clearErr('day'); });
+  timeSel.addEventListener('change', function () { clearErr('time'); note.hidden = true; });
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var r = check();
+    ['items', 'day', 'time', 'name', 'phone'].forEach(clearErr);
+    if (r.bad.length) {
+      r.bad.forEach(function (b) { setErr(b[0], b[1]); });
+      note.textContent = r.bad.length === 1 ? 'One thing to fix above.' : r.bad.length + ' things to fix above.';
+      note.hidden = false;
+      var first = r.bad[0][0];
+      var target = first === 'items' ? $('#rows .row .step button:not(:disabled)') : fieldFor[first];
+      if (target) { target.focus(); }
+      return;
+    }
+    note.hidden = true;
+    showDone(r);
+  });
+
+  function line(a, b, cls) {
+    var d = document.createElement('div');
+    if (cls) { d.className = cls; }
+    var x = document.createElement('span'), y = document.createElement('span');
+    x.textContent = a; y.textContent = b;
+    d.appendChild(x); d.appendChild(y);
+    return d;
+  }
+
+  function showDone(r) {
+    var recap = $('#recap');
+    recap.innerHTML = '';
+    rows.forEach(function (row) {
+      var id = row.getAttribute('data-id');
+      if (qty[id] > 0) { recap.appendChild(line(qty[id] + ' × ' + names[id], money(qty[id] * price[id]))); }
+    });
+    recap.appendChild(line('Total, pay at the counter', money(totals().c), 'sum'));
+    var d = days[parseInt(daySel.value, 10)];
+    recap.appendChild(line('Pickup', d.label.replace(/^(Today|Tomorrow), /, '') + ' at ' + t12(parseFloat(timeSel.value))));
+    recap.appendChild(line('Name', r.name));
+    submitted = true;
+    $('#order-main').hidden = true;
+    $('#done').hidden = false;
+    updateBar();
+    var h = $('#done-title');
+    h.focus({ preventScroll: true });
+    var o = $('#order');
+    if (o.getBoundingClientRect().top < 56 && o.scrollIntoView) { o.scrollIntoView({ block: 'start' }); }
+  }
+
+  $('#again').addEventListener('click', function () {
+    Object.keys(qty).forEach(function (k) { qty[k] = 0; });
+    fieldFor.name.value = '';
+    fieldFor.phone.value = '';
+    submitted = false;
+    buildDays();
+    render();
+    $('#done').hidden = true;
+    $('#order-main').hidden = false;
+    $('#order').focus();
+  });
+
+  /* ---------- Open now and today's row ---------- */
+  function status() {
+    var now = new Date(), d = now.getDay(), h = now.getHours() + now.getMinutes() / 60, t = HOURS[d];
+    var el = $('#status'), txt = $('#status-text');
+    $$('#hours tr').forEach(function (tr) { tr.classList.toggle('today', parseInt(tr.getAttribute('data-d'), 10) === d); });
+    if (t && h >= t[0] && h < t[1]) {
+      el.classList.add('open');
+      txt.textContent = 'Open now, until ' + short(t[1]);
+      return;
+    }
+    el.classList.remove('open');
+    for (var i = 0; i < 8; i++) {
+      var dd = (d + i) % 7, tt = HOURS[dd];
+      if (!tt) { continue; }
+      if (i === 0 && h >= tt[0]) { continue; }
+      txt.textContent = 'Closed now. Opens ' + (i === 0 ? 'today' : i === 1 ? 'tomorrow' : DN[dd]) + ' at ' + short(tt[0]);
+      return;
+    }
+  }
+  status();
+  render();
+})();
+</script>
+</body>
+</html>
