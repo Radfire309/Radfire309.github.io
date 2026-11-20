@@ -48,6 +48,8 @@
   });
 
   /* ---------- Films: a poster until tapped, then a native player ---------- */
+  var narrowFilms = window.matchMedia ? window.matchMedia("(max-width: 767.98px)") : { matches: false };
+
   function playInPlace(link) {
     var poster = link.querySelector("img");
     var video = document.createElement("video");
@@ -65,6 +67,16 @@
     box.appendChild(video);
     link.parentNode.replaceChild(box, link);
 
+    /* A film in the film grid is the width of one tile, about 163 px on a phone: too small to read its
+       captions. On a narrow screen the tile takes the whole row while its film plays (the CSS only acts
+       under 768 px) and gives it back when another film starts or this one ends. */
+    var tile = box.closest ? box.closest(".film") : null;
+    if (tile) {
+      tile.classList.add("is-wide");
+      video.addEventListener("ended", function () { tile.classList.remove("is-wide"); });
+      if (narrowFilms.matches && tile.scrollIntoView) tile.scrollIntoView({ block: "center", behavior: "instant" });
+    }
+
     video.focus();
     var started = video.play();
     if (started && started.catch) started.catch(function () {});
@@ -76,6 +88,9 @@
     var playing = event.target;
     each(document.querySelectorAll("video"), function (other) {
       if (other !== playing && !other.paused) other.pause();
+    });
+    each(document.querySelectorAll(".film.is-wide"), function (tile) {
+      if (!tile.contains(playing)) tile.classList.remove("is-wide");
     });
   }, true);
 
@@ -99,7 +114,7 @@
   }
 
   /* ---------- Large view (lightbox) ---------- */
-  var box = null, boxImg, boxCap, boxCount, boxPrev, boxNext, boxItems = [], boxAt = 0, opener = null;
+  var box = null, boxImg, boxPan, boxZoom, boxCap, boxCount, boxPrev, boxNext, boxItems = [], boxAt = 0, opener = null, zoomed = false;
 
   function buildBox() {
     box = document.createElement("dialog");
@@ -107,17 +122,24 @@
     box.setAttribute("aria-label", "Screen, large view");
     box.innerHTML =
       '<div class="lb-inner">' +
-        '<figure class="lb-figure"><img class="lb-img" alt=""><figcaption class="lb-cap">' +
+        '<figure class="lb-figure"><div class="lb-pan"><img class="lb-img" alt="" draggable="false"></div><figcaption class="lb-cap">' +
           '<span class="lb-text"></span><span class="lb-count" aria-live="polite"></span></figcaption></figure>' +
         '<button type="button" class="lb-btn lb-prev" aria-label="Previous screen">' +
           '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
         '<button type="button" class="lb-btn lb-next" aria-label="Next screen">' +
           '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+        '<button type="button" class="lb-btn lb-zoom" aria-pressed="false">' +
+          '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 15l5 5M10.5 8v5M8 10.5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>' +
+          '<span>Zoom</span></button>' +
         '<button type="button" class="lb-btn lb-close" aria-label="Close the large view">' +
           '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>' +
       "</div>";
     document.body.appendChild(box);
     boxImg = box.querySelector(".lb-img");
+    boxPan = box.querySelector(".lb-pan");
+    boxZoom = box.querySelector(".lb-zoom");
+    boxZoom.addEventListener("click", function () { setZoom(!zoomed); });
+    dragToPan(boxPan);
     boxCap = box.querySelector(".lb-text");
     boxCount = box.querySelector(".lb-count");
     boxPrev = box.querySelector(".lb-prev");
@@ -126,14 +148,15 @@
     boxNext.addEventListener("click", function () { step(1); });
     box.querySelector(".lb-close").addEventListener("click", closeBox);
     box.addEventListener("click", function (event) {
-      if (event.target === box || event.target.classList.contains("lb-inner")) closeBox();
+      var t = event.target;
+      if (t === box || t.classList.contains("lb-inner") || (t === boxPan && !zoomed)) closeBox();
     });
     box.addEventListener("keydown", function (event) {
       if (event.key === "ArrowLeft") { event.preventDefault(); step(-1); }
       else if (event.key === "ArrowRight") { event.preventDefault(); step(1); }
       else if (event.key === "Tab") {
         /* Keep focus inside the large view. */
-        var keys = Array.prototype.filter.call(box.querySelectorAll("button"), function (b) { return !b.hidden; });
+        var keys = Array.prototype.filter.call(box.querySelectorAll("button, .lb-pan[tabindex]"), function (b) { return !b.hidden; });
         var at = keys.indexOf(document.activeElement);
         event.preventDefault();
         keys[(at + (event.shiftKey ? -1 : 1) + keys.length) % keys.length].focus();
@@ -143,7 +166,56 @@
     box.addEventListener("close", afterClose);
   }
 
+  /* Zoom: the picture at its real detail (one image pixel to one screen pixel, and at least twice the fitted
+     width) inside an area the visitor scrolls or drags around; a second press returns to the fitted view.
+     Showing another picture, opening and closing all reset it. */
+  function setZoom(on) {
+    if (on === zoomed || !box) return;
+    var item = boxItems[boxAt];
+    if (on) {
+      var fitted = boxImg.getBoundingClientRect().width || item.w;
+      var target = Math.max(item.w / (window.devicePixelRatio || 1), fitted * 2);
+      if (target > item.w) target = item.w;
+      if (target < fitted * 1.5) target = fitted * 1.5;
+      boxImg.style.width = Math.round(target) + "px";
+      boxPan.setAttribute("tabindex", "0");
+      boxPan.setAttribute("role", "region");
+      boxPan.setAttribute("aria-label", "Zoomed picture. Scroll or drag to look around.");
+    } else {
+      boxImg.style.width = "";
+      boxPan.removeAttribute("tabindex");
+      boxPan.removeAttribute("role");
+      boxPan.removeAttribute("aria-label");
+    }
+    zoomed = on;
+    box.classList.toggle("is-zoomed", on);
+    boxZoom.setAttribute("aria-pressed", on ? "true" : "false");
+    boxPan.scrollLeft = on ? (boxPan.scrollWidth - boxPan.clientWidth) / 2 : 0;
+    boxPan.scrollTop = on ? (boxPan.scrollHeight - boxPan.clientHeight) / 2 : 0;
+  }
+
+  /* A mouse drags the picture around; a finger scrolls the area itself. */
+  function dragToPan(pan) {
+    var start = null;
+    pan.addEventListener("pointerdown", function (event) {
+      if (!zoomed || event.pointerType !== "mouse" || event.button !== 0) return;
+      start = { x: event.clientX, y: event.clientY, left: pan.scrollLeft, top: pan.scrollTop };
+      pan.classList.add("is-dragging");
+      if (pan.setPointerCapture) pan.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+    pan.addEventListener("pointermove", function (event) {
+      if (!start) return;
+      pan.scrollLeft = start.left - (event.clientX - start.x);
+      pan.scrollTop = start.top - (event.clientY - start.y);
+    });
+    var end = function () { start = null; pan.classList.remove("is-dragging"); };
+    pan.addEventListener("pointerup", end);
+    pan.addEventListener("pointercancel", end);
+  }
+
   function render() {
+    setZoom(false);
     var item = boxItems[boxAt];
     boxImg.src = item.src;
     boxImg.width = item.w;
@@ -199,6 +271,7 @@
   }
 
   function afterClose() {
+    setZoom(false);
     root.classList.remove("lb-open");
     if (opener && document.contains(opener)) opener.focus();
     opener = null;
@@ -275,21 +348,33 @@
     var clearBtn = root.querySelector("[data-pick-clear]");
     var bar = root.querySelector("[data-pick-bar]");
     var barCount = root.querySelector("[data-pick-bar-count]");
+    var goalBox = root.querySelector("[data-pick-goals]");
+    var goalList = root.querySelector("[data-pick-goal-list]");
     var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var items = [];          /* catalogue order: { id, name, line, button, chips, row } */
+    var items = [];          /* catalogue order: { id, name, line, button, chips, row, direct } */
     var byId = {};
+    var goals = [];          /* { id, label, picks, button, on } */
+    var goalById = {};
+    var mail = {};
+    try { mail = JSON.parse(root.getAttribute("data-mail") || "{}") || {}; } catch (err) { mail = {}; }
+    var emptyHint = mail.empty_hint || hint.textContent;
+    var STORE = "portfolio-picker";
 
     /* Each tile arrives as a plain card; it becomes a real toggle button here. */
-    each(root.querySelectorAll(".pick-item"), function (li) {
-      var span = li.querySelector(".pick");
-      var id = span.getAttribute("data-pick");
+    function toButton(span, attr) {
       var button = document.createElement("button");
       button.type = "button";
       button.className = span.className;
-      button.setAttribute("data-pick", id);
+      button.setAttribute(attr, span.getAttribute(attr));
       button.setAttribute("aria-pressed", "false");
       while (span.firstChild) button.appendChild(span.firstChild);
       span.parentNode.replaceChild(button, span);
+      return button;
+    }
+    each(root.querySelectorAll(".pick-item"), function (li) {
+      var span = li.querySelector(".pick");
+      var id = span.getAttribute("data-pick");
+      var button = toButton(span, "data-pick");
       var chips = [];
       each(li.querySelectorAll(".pick-built a"), function (a) {
         chips.push({ name: a.textContent, href: a.getAttribute("href") });
@@ -299,14 +384,26 @@
         name: button.querySelector(".pick-name").textContent,
         line: button.querySelector(".pick-line").textContent,
         icon: button.querySelector(".pick-icon").innerHTML,
-        button: button, chips: chips, row: null
+        button: button, chips: chips, row: null, direct: false
       };
       items.push(item);
       byId[id] = item;
     });
+    each(root.querySelectorAll(".goal-item"), function (li) {
+      var span = li.querySelector(".goal");
+      var id = span.getAttribute("data-goal");
+      var picks = (span.getAttribute("data-goal-picks") || "").split(" ").filter(function (p) { return byId[p]; });
+      var button = toButton(span, "data-goal");
+      var g = { id: id, label: button.querySelector(".goal-name").textContent, picks: picks, button: button, on: false };
+      goals.push(g);
+      goalById[id] = g;
+    });
     root.classList.add("is-ready");
 
+    function goalsFor(it) { return goals.filter(function (g) { return g.on && g.picks.indexOf(it.id) >= 0; }); }
+    function isOn(it) { return it.direct || goalsFor(it).length > 0; }
     function picked() { return items.filter(function (it) { return !!it.row; }); }
+    function chosenGoals() { return goals.filter(function (g) { return g.on; }); }
 
     function makeRow(it) {
       var row = document.createElement("li");
@@ -334,32 +431,68 @@
       return row;
     }
 
-    function mailHref(sel) {
-      var lines = ["Hello Tony,", "", "I have an app idea. These are the functions it needs:", ""];
+    /* The email: goals first, then the parts, each on its own line. */
+    function mailHref(gs, sel) {
+      var lines = [mail.greeting || "Hello Tony,", "", mail.need || "I need a tool for my business."];
+      if (gs.length) {
+        lines.push("", mail.goals_heading || "What it should do:");
+        gs.forEach(function (g) { lines.push("- " + g.label); });
+      }
+      lines.push("", mail.parts_heading || "Parts it may need:");
       sel.forEach(function (it) { lines.push("- " + it.name); });
-      lines.push("", "About the app:", "");
-      return "mailto:" + contactValue + "?subject=" + encodeURIComponent("An app idea") +
+      lines.push("", mail.about || "About the business:", "", mail.reach || "Best way to reach me:", "");
+      return "mailto:" + contactValue + "?subject=" + encodeURIComponent(mail.subject || "A tool for my business") +
         "&body=" + encodeURIComponent(lines.join("\r\n"));
+    }
+
+    function save() {
+      try {
+        var data = {
+          goals: chosenGoals().map(function (g) { return g.id; }),
+          picks: items.filter(function (it) { return it.direct; }).map(function (it) { return it.id; })
+        };
+        if (data.goals.length || data.picks.length) window.sessionStorage.setItem(STORE, JSON.stringify(data));
+        else window.sessionStorage.removeItem(STORE);
+      } catch (err) { /* storage can be blocked; the picker works without it */ }
+    }
+
+    function restore() {
+      try {
+        var data = JSON.parse(window.sessionStorage.getItem(STORE) || "null");
+        if (!data) return;
+        (Array.isArray(data.goals) ? data.goals : []).forEach(function (id) { if (goalById[id]) goalById[id].on = true; });
+        (Array.isArray(data.picks) ? data.picks : []).forEach(function (id) { if (byId[id]) byId[id].direct = true; });
+      } catch (err) { /* ignore */ }
     }
 
     function update(message) {
       var sel = picked();
+      var gs = chosenGoals();
       var n = sel.length;
       countEl.textContent = n + " of " + total;
       root.classList.toggle("has-picks", n > 0);
       empty.hidden = n > 0;
+      if (goalBox) {
+        goalBox.hidden = gs.length === 0;
+        goalList.textContent = "";
+        gs.forEach(function (g) {
+          var li = document.createElement("li");
+          li.textContent = g.label;
+          goalList.appendChild(li);
+        });
+      }
       if (n > 0 && contactOk) {
-        send.setAttribute("href", mailHref(sel));
+        send.setAttribute("href", mailHref(gs, sel));
         send.removeAttribute("aria-disabled");
         hint.hidden = true;
       } else {
         send.removeAttribute("href");
         send.setAttribute("aria-disabled", "true");
         hint.hidden = false;
-        if (!contactOk) hint.textContent = "The contact address is not set yet.";
+        hint.textContent = contactOk ? emptyHint : "The contact address is not set yet.";
       }
-      allBtn.disabled = n === total;
-      clearBtn.disabled = n === 0;
+      allBtn.disabled = items.every(function (x) { return x.direct; });
+      clearBtn.disabled = n === 0 && gs.length === 0;
       if (bar) {
         bar.hidden = n === 0;
         barCount.textContent = n === 1 ? "1 function picked" : n + " functions picked";
@@ -367,6 +500,7 @@
       var summary = n === 0 ? "Nothing picked yet. " + total + " functions on offer." :
         n + " of " + total + " functions picked.";
       if (message !== undefined) status.textContent = (message ? message + " " : "") + summary;
+      save();
     }
 
     function animateIn(row, delay) {
@@ -387,7 +521,7 @@
       button.classList.add("is-settling");
     }
 
-    function setPicked(it, on, delay) {
+    function setShown(it, on, delay, quiet) {
       if (!!it.row === on) return false;
       it.button.setAttribute("aria-pressed", on ? "true" : "false");
       if (on) {
@@ -398,8 +532,7 @@
           if (items[k].row && items[k].row.parentNode === list) { after = items[k].row; break; }
         }
         list.insertBefore(it.row, after);
-        animateIn(it.row, delay);
-        settle(it.button);
+        if (!quiet) { animateIn(it.row, delay); settle(it.button); }
       } else {
         if (it.row && it.row.parentNode) it.row.parentNode.removeChild(it.row);
         it.row = null;
@@ -407,14 +540,28 @@
       return true;
     }
 
+    /* Show what the goals and the direct picks add up to. */
+    function sync(quiet) {
+      var added = 0;
+      goals.forEach(function (g) { g.button.setAttribute("aria-pressed", g.on ? "true" : "false"); });
+      items.forEach(function (it) { if (setShown(it, isOn(it), Math.min(added, 12) * 35, quiet) && isOn(it)) added++; });
+    }
+
+    function names(gs) { return gs.map(function (g) { return g.label; }).join(", "); }
+
     root.addEventListener("click", function (event) {
       var t = event.target;
+      var goalBtn = t.closest("button[data-goal]");
+      if (goalBtn) {
+        var g = goalById[goalBtn.getAttribute("data-goal")];
+        g.on = !g.on;
+        sync();
+        update(g.label + (g.on ? " chosen." : " released."));
+        return;
+      }
       var tile = t.closest("button[data-pick]");
       if (tile) {
-        var it = byId[tile.getAttribute("data-pick")];
-        var on = !it.row;
-        setPicked(it, on);
-        update(it.name + (on ? " added." : " removed."));
+        toggleDirect(byId[tile.getAttribute("data-pick")]);
         return;
       }
       var remove = t.closest(".panel-remove");
@@ -422,26 +569,39 @@
         var row = remove.closest(".panel-item");
         var gone = byId[row.getAttribute("data-row")];
         var next = row.nextElementSibling || row.previousElementSibling;
-        setPicked(gone, false);
-        update(gone.name + " removed.");
-        if (next) next.querySelector(".panel-remove").focus();
+        toggleDirect(gone, true);
+        if (gone.row) remove.focus();
+        else if (next) next.querySelector(".panel-remove").focus();
         else countEl.focus();
         return;
       }
       if (t.closest("[data-pick-all]")) {
-        var added = 0;
-        items.forEach(function (x) { if (setPicked(x, true, Math.min(added, 12) * 35)) added++; });
+        items.forEach(function (x) { x.direct = true; });
+        sync();
         update("All picked.");
         return;
       }
       if (t.closest("[data-pick-clear]")) {
-        items.forEach(function (x) { setPicked(x, false); });
+        items.forEach(function (x) { x.direct = false; });
+        goals.forEach(function (x) { x.on = false; });
+        sync();
         update("List cleared.");
         countEl.focus();
         return;
       }
       if (t.closest("[data-pick-send]") && !picked().length) event.preventDefault();
     });
+
+    /* A tile or a remove button changes the visitor's own pick; a goal can still need the function. */
+    function toggleDirect(it, removeOnly) {
+      var on = removeOnly ? false : !it.direct;
+      it.direct = on;
+      sync();
+      var by = goalsFor(it);
+      if (on) update(it.name + " added.");
+      else if (it.row && by.length) update(it.name + " stays on your list, because " + names(by) + " needs it. Release that need to take it off.");
+      else update(it.name + " removed.");
+    }
 
     /* A chip jump lights up the card or showcase it lands on. */
     document.addEventListener("click", function (event) {
@@ -456,7 +616,18 @@
     });
 
     countEl.setAttribute("tabindex", "-1");
+    restore();
+    sync(true);
     update();
+    /* Coming back by the browser's back button can restore the page from memory; show the saved list again. */
+    window.addEventListener("pageshow", function (event) {
+      if (!event.persisted) return;
+      goals.forEach(function (x) { x.on = false; });
+      items.forEach(function (x) { x.direct = false; });
+      restore();
+      sync(true);
+      update();
+    });
   })();
 
   /* ==========================================================================
@@ -600,6 +771,73 @@
       entries.forEach(function (en) { startSeen = en.isIntersecting; });
       place();
     }, { threshold: 0, rootMargin: "0px 0px -15% 0px" }).observe(section);
+  })();
+
+  /* ==========================================================================
+     Main page: the menus and the Back button. The menus are plain links and
+     need nothing from here. This keeps the browser's Back button honest:
+     after a jump to a section, the address used to keep the section's name
+     (#films), and a page that came back that way could slide on its own to
+     that section a moment after showing the visitor where they were.
+     - A jump inside the page scrolls to the section and adds a history step
+       with the plain address, so Back inside the page still undoes the jump
+       and the address never carries a section name to slide back to.
+     - A shared link that ends in a section name (#websites) opens there as
+       usual; once the page has loaded, the name is taken off the address.
+     - Leaving the page stops a slide that is still running, so a page kept
+       in memory does not finish it when the visitor comes back.
+     ========================================================================== */
+  (function stayPut() {
+    if (!document.body.classList.contains("page-home")) return;
+    if (!window.history || !history.pushState || !history.replaceState) return;
+    var plain = function () { return location.pathname + location.search; };
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function targetOf(link) {
+      var href = link.getAttribute("href") || "";
+      if (href.charAt(0) !== "#" || href.length < 2) return null;
+      var id;
+      try { id = decodeURIComponent(href.slice(1)); } catch (err) { return null; }
+      return document.getElementById(id);
+    }
+
+    /* Where focus goes after a jump, as a fragment link would put it: the element itself if it can take
+       focus, else the heading that names it, else the element made focusable for this. */
+    function focusAfterJump(target) {
+      var el = target;
+      if (!target.hasAttribute("tabindex") && !/^(A|BUTTON|INPUT|SELECT|TEXTAREA)$/.test(target.tagName)) {
+        var named = target.getAttribute("aria-labelledby");
+        var heading = named && document.getElementById(named.split(" ")[0]);
+        el = heading || target;
+        if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
+      }
+      try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
+    }
+
+    document.addEventListener("click", function (event) {
+      if (event.defaultPrevented || event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      var link = event.target.closest && event.target.closest("a[href^='#']");
+      if (!link) return;
+      var target = targetOf(link);
+      if (!target) return;
+      event.preventDefault();
+      history.pushState(null, "", plain());
+      target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      focusAfterJump(target);
+    });
+
+    /* A shared link with a section name: the browser has already opened it there. */
+    function cleanAddress() {
+      if (location.hash && location.hash.length > 1) history.replaceState(history.state, "", plain());
+    }
+    if (document.readyState === "complete") window.setTimeout(cleanAddress, 0);
+    else window.addEventListener("load", function () { window.setTimeout(cleanAddress, 0); });
+
+    /* Leaving mid-slide: stop where the page is. */
+    window.addEventListener("pagehide", function () {
+      try { window.scrollTo({ top: window.scrollY, left: window.scrollX, behavior: "instant" }); }
+      catch (err) { window.scrollTo(window.scrollX, window.scrollY); }
+    });
   })();
 
   /* ---------- Footer year ---------- */
