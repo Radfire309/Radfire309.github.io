@@ -1269,6 +1269,32 @@ a.mini-pic:hover img { transform: scale(1.025); }
 
 /* ---------- Cards (sample websites) ---------- */
 .samples-line { margin: -1rem 0 1.5rem; color: var(--text-muted); }
+/* Website prices: four plain tiles between the section head and the samples. */
+.site-prices { margin: -0.5rem 0 2.25rem; }
+.site-prices + .samples-line { margin-top: 0; }
+.site-prices-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 1rem; }
+.site-prices-note { color: var(--text-muted); }
+.price-tiles { margin-top: 0.9rem; display: grid; gap: 0.75rem; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 560px) { .price-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .price-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; } }
+.price-tile {
+  padding: 1.1rem 1.25rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.price-what { font-size: 0.9375rem; font-weight: 650; color: var(--text-muted); }
+.price-amount {
+  margin-top: 0.15rem;
+  font-size: var(--step-3);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+}
+.price-amount small { font-size: 0.45em; font-weight: 650; letter-spacing: 0; color: var(--text-muted); }
+.price-detail { margin-top: 0.4rem; font-size: 0.9375rem; color: var(--text-muted); }
 .card-grid { display: grid; gap: 1rem; }
 @media (min-width: 768px) {
   .card-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
