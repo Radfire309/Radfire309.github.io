@@ -49,6 +49,9 @@ section[id],header[id]{scroll-margin-top:56px}
 .samplebar strong{font-weight:800}
 .samplebar a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;color:#F4C25B;font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 .samplebar a:focus-visible{outline-color:#FBF4E8}
+.samplebar .wrap{flex-wrap:wrap}
+.samplebar .sb-links{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px}
+
 
 /* ---------- Header ---------- */
 .site-head{padding:10px 0 6px}
@@ -211,6 +214,15 @@ table.hours tr.closed td{color:var(--brown-soft)}
 .shopfront svg{width:100%;height:auto}
 
 /* ---------- Footer ---------- */
+/* ---------- Note from Tony ---------- */
+.tonynote{padding:44px 0 52px;background:var(--cream)}
+.tn-box{border:3px dashed var(--brown);border-radius:var(--radius);background:var(--paper);padding:24px 22px;display:grid;gap:12px;justify-items:start;max-width:640px;font-family:var(--sans)}
+.tn-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brown-soft)}
+.tn-box h2{font-size:24px}
+.tn-price{font-weight:700}
+.tn-price:has([data-sample-price]:empty){display:none}
+.tn-btn{margin-top:6px}
+@media (max-width:480px){.tn-btn{width:100%}}
 .foot{background:var(--brown-deep);color:#FBF4E8;padding:34px 0 30px}
 .foot .wrap{display:grid;gap:16px}
 .foot b{font-family:var(--serif);font-size:20px}
@@ -341,7 +353,7 @@ body.has-bar{padding-bottom:88px}
 <div class="samplebar" role="region" aria-label="Sample site notice">
   <div class="wrap">
     <p><strong>Sample site by Tony Benson.</strong> This business is made up.</p>
-    <a href="../../index.html#samples">Back to portfolio</a>
+    <span class="sb-links"><a href="../../websites/index.html">Back to Tony&rsquo;s websites page</a> <a href="../../websites/index.html#start-bakery">Want one like this?</a></span>
   </div>
 </div>
 
@@ -681,6 +693,18 @@ body.has-bar{padding-bottom:88px}
   </section>
 </main>
 
+<section class="tonynote" aria-labelledby="tn-h">
+  <div class="wrap">
+    <div class="tn-box">
+      <p class="tn-kicker">A note from Tony Benson, not from Wren Street Bakery &amp; Coffee</p>
+      <h2 id="tn-h">About this sample</h2>
+      <p>This is a sample site I built to show what I can make. The business is made up, so there is nothing to buy here.</p>
+      <p class="tn-price">Price for a site like this: <strong data-sample-price>from $1,800</strong></p>
+      <a class="btn tn-btn" href="../../websites/index.html#start-bakery">Start one like this</a>
+    </div>
+  </div>
+</section>
+
 <footer class="foot dark">
   <div class="wrap">
     <div>
@@ -691,7 +715,7 @@ body.has-bar{padding-bottom:88px}
     <div class="links">
       <a href="#order">Order ahead</a>
       <a href="#menu">Menu</a>
-      <a href="../../index.html#samples">Back to the portfolio</a>
+      <a href="../../websites/index.html">Back to Tony&rsquo;s websites page</a>
     </div>
   </div>
 </footer>

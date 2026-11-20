@@ -459,6 +459,149 @@
     update();
   })();
 
+  /* ==========================================================================
+     Websites page: the starter and the slim "Start" bar. Runs only where the
+     page has [data-starter]; without this file the starter is a plain email
+     link with the template already in it.
+     ========================================================================== */
+  (function websitesStarter() {
+    var starter = document.querySelector("[data-starter]");
+    if (!starter) return;
+    var data;
+    try { data = JSON.parse(starter.querySelector("[data-starter-data]").textContent); } catch (err) { return; }
+    var address = (starter.getAttribute("data-contact") || "").trim();
+    if (!/^[^\s@<>"'?&#]+@[^\s@<>"'?&#]+\.[A-Za-z]{2,}$/.test(address)) return;
+    var send = starter.querySelector("[data-starter-send]");
+    var summaryText = starter.querySelector("[data-starter-summary-text]");
+    var noteBox = starter.querySelector("[data-starter-sample]");
+    var noteText = starter.querySelector("[data-starter-sample-text]");
+    var STORE = "websites-starter";
+    var state = { picks: {}, sample: "" };
+
+    function fill(template, values) {
+      return String(template || "").replace(/\{(\w+)\}/g, function (m, k) { return values[k] !== undefined ? values[k] : m; });
+    }
+
+    /* The picked option labels of one question, in the order they are listed. */
+    function labelsOf(q) {
+      var chosen = state.picks[q.id] || [];
+      var out = [];
+      Object.keys(q.options).forEach(function (id) { if (chosen.indexOf(id) >= 0) out.push(q.options[id]); });
+      return out;
+    }
+
+    function joinLabels(list) {
+      return list.map(function (t, i) { return i ? t.charAt(0).toLowerCase() + t.slice(1) : t; }).join(", ");
+    }
+
+    function bodyLines() {
+      var lines = [];
+      data.body.forEach(function (line) {
+        if (line.trim() !== "{picks}") { lines.push(line); return; }
+        data.questions.forEach(function (q) { lines.push(q.label + ": " + joinLabels(labelsOf(q))); });
+        var s = state.sample && data.samples[state.sample];
+        if (s && data.sampleLine) lines.push(fill(data.sampleLine, s));
+      });
+      return lines;
+    }
+
+    function mailHref() {
+      return "mailto:" + address + "?subject=" + encodeURIComponent(data.subject) +
+        "&body=" + encodeURIComponent(bodyLines().join("\r\n"));
+    }
+
+    function save() {
+      try { sessionStorage.setItem(STORE, JSON.stringify(state)); } catch (err) {}
+    }
+
+    function render() {
+      each(starter.querySelectorAll("[data-q]"), function (group) {
+        var chosen = state.picks[group.getAttribute("data-q")] || [];
+        each(group.querySelectorAll("[data-option]"), function (b) {
+          b.setAttribute("aria-pressed", chosen.indexOf(b.getAttribute("data-option")) >= 0 ? "true" : "false");
+        });
+      });
+      var s = state.sample && data.samples[state.sample];
+      noteBox.hidden = !s;
+      if (s) noteText.textContent = fill(data.sampleNote, s);
+      var parts = [];
+      data.questions.forEach(function (q) {
+        var l = labelsOf(q);
+        if (l.length) parts.push(q.label + ": " + joinLabels(l) + ".");
+      });
+      if (s) parts.push(fill(data.sampleLine, s) + ".");
+      /* The summary is a polite live region, so it is written only when a pick changes it. */
+      var text = parts.length ? parts.join(" ") : data.summaryEmpty;
+      if (summaryText.textContent !== text) summaryText.textContent = text;
+      send.setAttribute("href", mailHref());
+      save();
+    }
+
+    starter.addEventListener("click", function (event) {
+      var b = event.target.closest("[data-option]");
+      if (b) {
+        var group = b.closest("[data-q]");
+        var qid = group.getAttribute("data-q");
+        var id = b.getAttribute("data-option");
+        var chosen = (state.picks[qid] || []).slice();
+        var at = chosen.indexOf(id);
+        if (group.getAttribute("data-kind") === "multiple") {
+          if (at >= 0) chosen.splice(at, 1); else chosen.push(id);
+        } else {
+          chosen = at >= 0 ? [] : [id];
+        }
+        state.picks[qid] = chosen;
+        render();
+        return;
+      }
+      if (event.target.closest("[data-starter-sample-clear]")) {
+        state.sample = "";
+        render();
+        var first = starter.querySelector("[data-option]");
+        if (first) first.focus();
+      }
+    });
+
+    /* #start-heating and the like: the page has an anchor of that name at the starter, so the browser
+       goes there by itself (smoothly unless reduced motion is asked for); this notes the sample. */
+    function fromHash() {
+      var m = /^#start-([a-z0-9-]+)$/.exec(location.hash || "");
+      if (!m || !data.samples[m[1]]) return;
+      state.sample = m[1];
+      render();
+    }
+
+    try {
+      var saved = JSON.parse(sessionStorage.getItem(STORE) || "null");
+      if (saved && typeof saved === "object") {
+        data.questions.forEach(function (q) {
+          var list = saved.picks && saved.picks[q.id];
+          if (Array.isArray(list)) state.picks[q.id] = list.filter(function (id) { return q.options[id]; });
+        });
+        if (saved.sample && data.samples[saved.sample]) state.sample = saved.sample;
+      }
+    } catch (err) {}
+    render();
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+
+    /* The slim bar: shown on a phone once the top has scrolled away, hidden while the starter is in view. */
+    var bar = document.querySelector("[data-ws-bar]");
+    var hero = document.querySelector(".ws-hero");
+    var section = document.getElementById("start");
+    if (!bar || !hero || !section || !("IntersectionObserver" in window)) return;
+    var heroGone = false, startSeen = false;
+    function place() { bar.classList.toggle("is-shown", heroGone && !startSeen); }
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { heroGone = !en.isIntersecting; });
+      place();
+    }, { threshold: 0 }).observe(hero);
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { startSeen = en.isIntersecting; });
+      place();
+    }, { threshold: 0, rootMargin: "0px 0px -15% 0px" }).observe(section);
+  })();
+
   /* ---------- Footer year ---------- */
   var year = document.querySelector("[data-year]");
   if (year) year.textContent = String(new Date().getFullYear());

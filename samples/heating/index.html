@@ -64,6 +64,9 @@ a{color:inherit}
   font-size:13px;font-weight:700;color:#2B1B00;text-decoration:underline;text-underline-offset:3px;
 }
 .samplebar a:hover{text-decoration-thickness:2px}
+.samplebar .wrap{flex-wrap:wrap}
+.samplebar .sb-links{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px}
+
 
 /* ---------- Header ---------- */
 .site-head{background:var(--navy);color:#fff;padding-top:6px}
@@ -249,6 +252,18 @@ h2{font-size:clamp(28px,6.6vw,42px);line-height:1.1;font-weight:900;letter-spaci
 .emergency p{color:var(--on-navy)}
 .emergency .btn{justify-self:start}
 
+.nb{white-space:nowrap}
+/* Note from Tony */
+.tonynote{background:var(--paper);padding:48px 0 56px}
+.tn-box{border:3px dashed var(--navy);border-radius:var(--radius);background:#fff;padding:24px 22px;display:grid;gap:12px;justify-items:start;max-width:640px}
+.tn-kicker{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--cool-ink)}
+.tn-box h2{font-size:24px;line-height:1.2;font-weight:900;color:var(--navy)}
+.tn-price{font-weight:700}
+.tn-price:has([data-sample-price]:empty){display:none}
+.tn-btn{background:var(--navy);color:#fff;margin-top:6px}
+.tn-btn:hover{background:var(--navy-3)}
+@media (max-width:480px){.tn-btn{width:100%}}
+
 /* Footer */
 .site-foot{background:var(--navy);color:var(--on-navy);padding:36px 0 40px;font-size:15.5px}
 .site-foot .wrap{display:grid;gap:18px}
@@ -298,7 +313,7 @@ h2{font-size:clamp(28px,6.6vw,42px);line-height:1.1;font-weight:900;letter-spaci
 <div class="samplebar" role="region" aria-label="Sample site notice">
   <div class="wrap">
     <p><strong>Sample site by Tony Benson.</strong> This business is made up.</p>
-    <a href="../../index.html#samples">Back to portfolio</a>
+    <span class="sb-links"><a href="../../websites/index.html">Back to Tony&rsquo;s websites page</a> <a href="../../websites/index.html#start-heating">Want one like this?</a></span>
   </div>
 </div>
 
@@ -574,7 +589,7 @@ h2{font-size:clamp(28px,6.6vw,42px);line-height:1.1;font-weight:900;letter-spaci
     <div>
       <p class="kicker">Request a quote</p>
       <h2 id="quote-h">Tell us what is going on. We will call with a price.</h2>
-      <p class="sub">Takes about a minute. If the house is cold right now, skip the form and call 555-0142.</p>
+      <p class="sub">Takes about a minute. If the house is cold right now, skip the form and call <span class="nb">555-0142</span>.</p>
       <ol class="steps" aria-label="What happens next">
         <li><div><b>You send the form</b><span>Service, a few words about the problem, and the day that suits you.</span></div></li>
         <li><div><b>We reply by the end of the next business day</b><span>A call or text to talk it through and pick a time window.</span></div></li>
@@ -685,6 +700,18 @@ h2{font-size:clamp(28px,6.6vw,42px);line-height:1.1;font-weight:900;letter-spaci
 
 </main>
 
+<section class="tonynote" aria-labelledby="tn-h">
+  <div class="wrap">
+    <div class="tn-box">
+      <p class="tn-kicker">A note from Tony Benson, not from Maple Ridge Heating &amp; Air</p>
+      <h2 id="tn-h">About this sample</h2>
+      <p>This is a sample site I built to show what I can make. The business is made up, so there is nothing to buy here.</p>
+      <p class="tn-price">Price for a site like this: <strong data-sample-price>$500</strong></p>
+      <a class="btn tn-btn" href="../../websites/index.html#start-heating">Start one like this</a>
+    </div>
+  </div>
+</section>
+
 <footer class="site-foot on-dark">
   <div class="wrap">
     <div>
@@ -693,7 +720,7 @@ h2{font-size:clamp(28px,6.6vw,42px);line-height:1.1;font-weight:900;letter-spaci
       <a class="tel" href="tel:5550142">555-0142</a>
     </div>
     <div>Monday to Friday 7 to 6<br>Saturday 8 to 2</div>
-    <p class="legal">Sample site by Tony Benson. <a href="../../index.html#samples">Back to the portfolio</a></p>
+    <p class="legal">Sample site by Tony Benson. <a href="../../websites/index.html">Back to Tony&rsquo;s websites page</a></p>
   </div>
 </footer>
 
