@@ -1865,7 +1865,9 @@ a.film-media:hover .play { transform: scale(1.06); }
   font-size: 0.9375rem;
 }
 .footer-inner { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem 1.5rem; }
-.footer-inner p:first-child { color: var(--text); font-weight: 650; }@media (min-width: 768px) {
+.footer-inner p:first-child { color: var(--text); font-weight: 650; }
+.footer-visits { margin-top: 0.9rem; max-width: 64ch; font-size: 0.8125rem; line-height: 1.5; }
+@media (min-width: 768px) {
   .footer-inner p:last-child { margin-left: auto; }
 }
 
