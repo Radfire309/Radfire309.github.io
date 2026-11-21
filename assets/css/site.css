@@ -28,6 +28,8 @@
   --frame-bar: #f1eee8;
   --frame-dot: #d3cec4;
   --phone-body: #1b1c20;
+  --phone-edge: #4a4d57;
+  --phone-rim: rgba(255, 255, 255, 0.16);
   --stage-bg: linear-gradient(145deg, #f6ece6 0%, #f1efea 55%, #ebeef3 100%);
   --ph-side: #f3f1ec;
   --ph-soft: #e6e2da;
@@ -87,7 +89,9 @@
     --play-fg: #f0905e;
     --frame-bar: #252931;
     --frame-dot: #3d424c;
-    --phone-body: #050607;
+    --phone-body: #0d0e12;
+    --phone-edge: #4b4f5a;
+    --phone-rim: rgba(255, 255, 255, 0.26);
     --stage-bg: linear-gradient(145deg, #2a1d17 0%, #1a1d23 55%, #171c26 100%);
     --ph-side: #20242b;
     --ph-soft: #2d323b;
@@ -131,7 +135,9 @@
   --play-fg: #f0905e;
   --frame-bar: #252931;
   --frame-dot: #3d424c;
-  --phone-body: #050607;
+  --phone-body: #0d0e12;
+  --phone-edge: #4b4f5a;
+  --phone-rim: rgba(255, 255, 255, 0.26);
   --stage-bg: linear-gradient(145deg, #2a1d17 0%, #1a1d23 55%, #171c26 100%);
   --ph-side: #20242b;
   --ph-soft: #2d323b;
@@ -583,7 +589,7 @@ a:hover { text-decoration-thickness: 2px; }
 .collage .browser { position: absolute; }
 .collage .layer-back { top: 0; right: 0; width: 70%; opacity: 0.96; transform: rotate(1.5deg); transform-origin: top right; }
 .collage .layer-front { left: 0; bottom: 6%; width: 86%; }
-.collage .layer-phone { position: absolute; right: 2%; bottom: 0; width: 23%; }
+.collage .layer-phone { position: absolute; right: 0; bottom: 0; width: 24%; }
 .collage-empty { aspect-ratio: 16 / 10.6; }
 .collage-empty .layer-front { inset: 0; width: 100%; bottom: auto; }
 .collage:not(:has(.layer-back)) .layer-front { top: 4%; bottom: auto; width: 90%; }
@@ -634,28 +640,47 @@ a:hover { text-decoration-thickness: 2px; }
   .browser { border-radius: 9px; }
 }
 
+/* A phone: a thin, even body around the screen. Every measure is a share of the phone itself (its
+   own width and height), never of the box it sits in, so it keeps its shape at any size. The body is
+   3% of the phone's width on all four sides, around a screen with the shape of the pictures
+   (1170 x 2532). */
 .phone {
   position: relative;
-  aspect-ratio: 1170 / 2532;
-  padding: 3.2%;
-  border-radius: 14% / 6.5%;
-  background: var(--phone-body);
-  box-shadow: var(--shadow-frame), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  isolation: isolate;
+  aspect-ratio: 1000 / 2094;
+  border-radius: 15.5% / 7.4%;
+  background: linear-gradient(150deg, var(--phone-edge) 0%, var(--phone-body) 42%);
+  box-shadow: var(--shadow-frame), inset 0 0 0 1px var(--phone-rim);
 }
-.phone img,
-.phone .shot-link { display: block; width: 100%; height: 100%; }
-.phone img { object-fit: cover; object-position: top center; border-radius: 11% / 5.2%; }
-.phone .shot-link { border-radius: 11% / 5.2%; }
-.phone-notch {
+.phone > img,
+.phone > .shot-link {
   position: absolute;
-  top: 3.8%;
-  left: 50%;
-  z-index: 1;
-  width: 30%;
-  height: 2.6%;
-  transform: translateX(-50%);
-  border-radius: 99px;
-  background: var(--phone-body);
+  top: 1.433%;
+  left: 3%;
+  display: block;
+  width: 94%;
+  height: 97.134%;
+  overflow: hidden;
+  border-radius: 13.3% / 6.15%;
+}
+.phone > img,
+.phone .shot-link img { object-fit: cover; object-position: top center; }
+.phone .shot-link img { display: block; width: 100%; height: 100%; }
+/* the side buttons: one on the right, a pair on the left */
+.phone::before,
+.phone::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 2.4%;
+  border-radius: 1.5px;
+}
+.phone::before { right: -1%; top: 25%; height: 9.5%; background: var(--phone-body); }
+.phone::after {
+  left: -1%;
+  top: 18.5%;
+  height: 13.5%;
+  background: linear-gradient(to bottom, var(--phone-body) 0 43%, transparent 43% 57%, var(--phone-body) 57% 100%);
 }
 
 /* placeholder drawing */
@@ -1276,7 +1301,7 @@ a:hover { text-decoration-thickness: 2px; }
   place-items: center;
   aspect-ratio: 16 / 10.6;
 }
-.slide-phone .phone { height: 100%; aspect-ratio: 1170 / 2532; width: auto; }
+.slide-phone .phone { height: 100%; width: auto; }
 @media (max-width: 599.98px) {
   .slide-phone .phone-stage { aspect-ratio: 4 / 5; }
 }
