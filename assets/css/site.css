@@ -306,7 +306,7 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 859.98px) { .site-nav + .theme-toggle { margin-left: auto; } }
 .no-js .theme-toggle { display: none; }
 
-/* The main page on phones and tablets: a second header row with the four main jumps (Websites, Work,
+/* The main page on phones and tablets: a second header row with the five main jumps (Websites, Work, Blog,
    Functions, Contact). Plain links, so they work with no script; the header is sticky, so they are always
    one tap away. From 860 px the full row of section links takes over. */
 .jump-nav { display: none; }
@@ -328,15 +328,18 @@ a:hover { text-decoration-thickness: 2px; }
   justify-content: center;
   min-width: 44px;
   min-height: 44px;
-  padding-inline: 0.6rem;
+  padding-inline: var(--jump-pad, 0.6rem);
   color: var(--text-muted);
-  font-size: 0.9375rem;
+  font-size: var(--jump-size, 0.9375rem);
   font-weight: 600;
   text-decoration: none;
   border-radius: 8px;
 }
-.jump-list li:first-child a { margin-left: -0.6rem; }
-.jump-list li:last-child a { margin-right: -0.6rem; }
+/* five links fit a 320 px phone: the padding and type step down on narrow screens */
+@media (max-width: 419.98px) { .jump-list { --jump-pad: 0.4rem; --jump-size: 0.875rem; gap: 0; } }
+@media (max-width: 349.98px) { .jump-list { --jump-pad: 0.3rem; --jump-size: 0.8125rem; } }
+.jump-list li:first-child a { margin-left: calc(-1 * var(--jump-pad, 0.6rem)); }
+.jump-list li:last-child a { margin-right: calc(-1 * var(--jump-pad, 0.6rem)); }
 @media (min-width: 600px) { .jump-list li:last-child a { margin-right: 0; } }
 .jump-list a:hover { color: var(--text); background: var(--bg-alt); }
 .jump-list a:focus-visible { outline-offset: -3px; }
