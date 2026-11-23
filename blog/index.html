@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog · Tony Benson</title>
+  <meta name="description" content="Notes on what I build: the problem, how it works, and what I learned.">
+  
+  <link rel="canonical" href="https://radfirelabs.com/blog/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tony Benson · Radfire Labs">
+  <meta property="og:title" content="Blog · Tony Benson">
+  <meta property="og:description" content="Notes on what I build: the problem, how it works, and what I learned.">
+  <meta property="og:url" content="https://radfirelabs.com/blog/">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/atom+xml" title="Tony Benson: blog" href="feed.xml">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/blog.css">
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.className = root.className.replace("no-js", "js");
+      try {
+        var saved = localStorage.getItem("theme");
+        if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="page-blog page-blog-index">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html" aria-label="Tony Benson, home">
+        <span class="brand-mark" aria-hidden="true">TB</span>
+        <span class="brand-name">Tony Benson</span>
+      </a>
+      <nav class="site-nav" aria-label="Site">
+        <ul>
+          <li><a href="../index.html#work">Work</a></li>
+          <li><a href="../websites/index.html">Websites</a></li>
+          <li><a href="index.html" aria-current="page">Blog</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Switch to light theme" data-theme-toggle>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="jump-nav" aria-label="Site">
+      <div class="container">
+        <ul class="jump-list" role="list">
+          <li><a href="../index.html#work">Work</a></li>
+          <li><a href="../websites/index.html">Websites</a></li>
+          <li><a href="index.html" aria-current="page">Blog</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="container blog-index" aria-labelledby="blog-title">
+      <header class="blog-head">
+        <p class="eyebrow">Blog</p>
+        <h1 id="blog-title" class="blog-title">Notes from the workbench</h1>
+        <p class="blog-intro">Notes on what I build: the problem, how it works, and what I learned.</p>
+      </header>
+      <ol class="post-list" role="list"><li class="post-card"><a class="post-card-pic" href="land-under-the-trees/index.html" tabindex="-1" aria-hidden="true"><img src="land-under-the-trees/real-hero.webp" width="2200" height="1375" loading="lazy" decoding="async" alt="Shaded relief of wooded ground from a laser survey: ravines, a small round pit and an old sunken track"></a><div class="post-card-text"><p class="post-meta"><time datetime="2026-11-22">November 22, 2026</time> · 5 min read</p><h2 class="post-card-title"><a href="land-under-the-trees/index.html">Land Under the Trees</a></h2><p class="post-card-summary">A free laser survey sees through the trees. Here is what it found in my woods, and how I took it back out there on my phone.</p><ul class="post-tags" role="list"><li>LiDAR</li><li>Python</li><li>Swift</li><li>Alfred</li></ul></div></li></ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>Tony Benson · Radfire Labs</p>
+      <p><a href="feed.xml">Feed</a></p>
+      <p><span data-year>2026</span></p>
+    </div>
+    <div class="container"><p class="footer-visits">We count visits to this site: the page, the day, and the site that linked here. The count uses no cookies and keeps no IP address. It is kept on www.teamchers.com, a server run by this site&#x27;s developer.</p></div>
+  </footer>
+
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/visits.js" data-site="radfirelabs" defer></script>
+</body>
+</html>
