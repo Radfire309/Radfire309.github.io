@@ -78,7 +78,6 @@
   background: #151a22;
 }
 .post-hero-pic { position: absolute; inset: 0; margin: 0; }
-.post-hero-pic a { display: block; height: 100%; }
 .post-hero-pic img { width: 100%; height: 100%; object-fit: cover; border: 0; border-radius: 0; }
 .post-hero.has-pic::after {
   content: "";
@@ -149,9 +148,6 @@
 }
 .post-body figure.post-drawing img { box-shadow: none; background: none; }
 .post-body figcaption { margin-top: 0.7rem; color: var(--text-muted); font-size: var(--step--1); line-height: 1.5; }
-.post-fig-link { display: block; border-radius: var(--radius); }
-.post-fig-link img { transition: filter 0.15s; }
-.post-fig-link:hover img { filter: brightness(1.06); }
 .post-figs { display: grid; gap: 1.25rem; }
 @media (min-width: 700px) { .post-figs { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); } }
 figure[data-label] { position: relative; }
@@ -313,37 +309,62 @@ figure[data-label]::before {
 .post-contact { font-weight: 600; }
 .post-foot-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 0.75rem; font-size: var(--step--1); }
 
-/* ---------- The picture viewer (assets/js/blog.js) ---------- */
-.viewer {
-  width: 100vw;
-  max-width: 100vw;
-  height: 100dvh;
-  max-height: 100dvh;
-  margin: 0;
-  padding: clamp(3.5rem, 2rem + 4vw, 4.5rem) clamp(0.75rem, 0.5rem + 2vw, 2.5rem) 1.25rem;
-  border: 0;
-  background: transparent;
-  color: #f4f2ee;
-  display: none;
+/* ---------- A report page (a post's <name>.md, templates/page.tmpl.html) ---------- */
+.report-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; padding-block: 1.25rem 0; }
+.report-back { color: var(--text-muted); font-size: var(--step--1); }
+.no-js .report-print { display: none; }
+.report-doc { max-width: calc(54rem + 2 * var(--gutter)); padding-block: clamp(1.5rem, 1rem + 2vw, 3rem) var(--section-y); }
+.report-head { padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.report-title { margin-top: 0.5rem; font-size: var(--step-4); line-height: 1.02; letter-spacing: -0.03em; }
+.report-lede { margin-top: 0.9rem; max-width: 44rem; color: var(--text-muted); font-size: var(--step-1); line-height: 1.5; }
+.report-doc > * + * { margin-top: 1.1em; }
+.report-doc h2 { margin-top: 2.4em; padding-top: 1.2rem; border-top: 1px solid var(--border); font-size: var(--step-2); letter-spacing: -0.01em; }
+.report-doc h3 { margin-top: 1.6em; font-size: var(--step-1); }
+.report-doc h3 + p, .report-doc h2 + p { margin-top: 0.5em; }
+.report-doc ul, .report-doc ol { padding-left: 1.3em; }
+.report-doc li + li { margin-top: 0.4em; }
+.report-doc li::marker { color: var(--accent); }
+.report-doc figure { margin: 1.5rem 0; }
+.report-doc figure img { width: 100%; border-radius: var(--radius-sm); background: var(--thumb-bg); }
+.report-doc figcaption { margin-top: 0.55rem; color: var(--text-muted); font-size: var(--step--1); line-height: 1.5; }
+.report-doc .post-figs { margin: 1.5rem 0; }
+.report-doc .post-figs figure { margin: 0; }
+.report-doc blockquote { padding: 0.75rem 1rem; border-left: 3px solid var(--accent); background: var(--bg-alt); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; color: var(--text-muted); }
+
+/* ---------- The call to action ---------- */
+.cta {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+  max-width: 62rem;
+  margin: clamp(3.5rem, 2.5rem + 5vw, 7rem) auto 0;
+  padding: clamp(1.5rem, 1rem + 3vw, 3rem);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--glow) 0%, transparent 55%),
+    var(--surface);
+  box-shadow: var(--shadow-frame);
 }
-.viewer[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; place-items: center; gap: 0.75rem; }
-.viewer::backdrop { background: rgba(8, 9, 12, 0.92); }
-.viewer-img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--radius-sm); cursor: zoom-out; }
-.viewer-cap { max-width: 46rem; color: rgba(244, 242, 238, 0.85); font-size: var(--step--1); line-height: 1.5; text-align: center; }
-.viewer-close {
-  position: fixed;
-  top: 0.9rem;
-  right: 0.9rem;
-  display: inline-grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid rgba(244, 242, 238, 0.3);
-  border-radius: 999px;
-  background: rgba(21, 26, 34, 0.85);
-  color: #f4f2ee;
-  cursor: pointer;
+.post-body > .cta { max-width: 62rem; }
+.cta-text h2 { margin: 0; font-size: var(--step-3); line-height: 1.08; letter-spacing: -0.02em; border: 0; padding: 0; }
+.cta-text p { margin-top: 0.75rem; max-width: 40rem; color: var(--text-muted); font-size: var(--step-1); line-height: 1.55; }
+.cta-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.cta-button { min-height: 52px; padding-inline: 1.5rem; font-size: 1.0625rem; }
+@media (min-width: 900px) {
+  .cta { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 2.5rem; }
+  .cta-buttons { flex-direction: column; align-items: stretch; }
 }
-.viewer-close:hover { border-color: #f4f2ee; }
-.post-fig-link { cursor: zoom-in; }
+
+/* ---------- Printing a report: plain black on white, no site chrome ---------- */
+@media print {
+  .site-header, .site-footer, .report-bar, .skip-link, .post-draft, .cta-buttons { display: none !important; }
+  html, body { background: #fff !important; color: #111 !important; }
+  .report-doc { max-width: none; padding: 0; }
+  .report-doc, .report-doc * { color: #111 !important; box-shadow: none !important; }
+  .report-doc figcaption, .report-lede { color: #444 !important; }
+  .report-doc h2 { break-after: avoid; border-color: #ccc; }
+  .report-doc figure, .report-doc li, .cta { break-inside: avoid; }
+  .report-doc a { text-decoration: none; }
+  .cta { border-color: #999; background: none; }
+}
